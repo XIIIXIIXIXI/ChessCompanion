@@ -5,12 +5,14 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 public class Scraper
 {
     public IWebDriver driver { get; private set; }
-    bool playsAsWhite;
+    private readonly Dictionary<int, string> movesList = new Dictionary<int, string>();
+    public bool isWhite;
 
     public Scraper()
     {
@@ -110,7 +112,7 @@ public class Scraper
     }
 
     //Return the players playing color
-    public bool FindPlayerColor()
+    public void FindPlayerColor()
     {
         // Find the <chess-board> element
         var chessBoardElement = driver.FindElement(By.CssSelector("chess-board"));
@@ -121,27 +123,150 @@ public class Scraper
         // Print the result
         if (isPlayingAsWhite)
         {
-            return true;
+            isWhite = true;
+       
         }
         //classValue.Contains("clock-white")
         else
         {
-            return false;
+            isWhite = false;
+        }
+    }
+    public List<string> GetMoveList()
+    {
+        // Find the moves list
+        var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+        if (moveListElem == null)
+        {
+            return null;
         }
 
+        // Select all children with class containing "white node" or "black node"
+        // Moves that are not pawn moves have a different structure
+        // containing children
+        IReadOnlyCollection<IWebElement> moves;
+        if (!movesList.Any())
+        {
+            // If the moves list is empty, find all moves
+            moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+        }
+        else
+        {
+            // If the moves list is not empty, find only the new moves
+            moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]:not([data-processed])"));
+        }
+
+        foreach (var move in moves)
+        {
+            var moveClass = move.GetAttribute("class");
+
+            // Check if it is indeed a move
+            if (moveClass.Contains("white node") || moveClass.Contains("black node"))
+            {
+                // Check if it has a figure
+                string figure = null;
+                try
+                {
+                    var child = move.FindElement(By.XPath("./*"));
+                    figure = child.GetAttribute("data-figurine");
+                }
+                catch (NoSuchElementException)
+                {
+                    // Ignore if there is no figure
+                }
+
+                // Check if it was en-passant or figure-move
+                if (figure == null)
+                {
+                    // If the movesList is empty or the last move was not the current move
+                    movesList[Convert.ToInt32(move.GetAttribute("data-ply"))] = move.Text;
+                }
+                else
+                {
+                    // Check if it is promotion
+                    if (move.Text.Contains("="))
+                    {
+                        var m = move.Text + figure;
+
+                        // If the move is a check, add the + in the end
+                        if (m.Contains("+"))
+                        {
+                            m = m.Replace("+", "") + "+";
+                        }
+
+                        // If the movesList is empty or the last move was not the current move
+                        movesList[Convert.ToInt32(move.GetAttribute("data-ply"))] = m;
+                    }
+                    else
+                    {
+                        // If the movesList is empty or the last move was not the current move
+                        movesList[Convert.ToInt32(move.GetAttribute("data-ply"))] = figure + move.Text;
+                    }
+                }
+
+                // Mark the move as processed
+                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].setAttribute('data-processed', 'true')", move);
+            }
+        }
+
+        return movesList.Values.ToList();
     }
 
 
     public void WaitForOpponentToMove()
     {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(600));
-        wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".clock-component.clock-top.clock-player-turn")));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6000));
+        if (isWhite)
+        {
+            // Wait up to 60 seconds for the move list to have an odd number of moves
+            
+            wait.Until(driver => {
+                var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+                var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+                int lastMove;
+                int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+                return lastMove % 2 == 0;
+            });
+        }
+        else
+        {
+            wait.Until(driver => {
+                var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+                var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+                int lastMove;
+                int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+                return lastMove % 2 == 1;
+            });
+        }
+        
+        
     }
 
     public void WaitForPlayerToMove()
     {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(600));
-        wait.Until(ExpectedConditions.ElementExists(By.CssSelector(".clock-component.clock-top:not(.clock-player-turn)")));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6000));
+        if (isWhite)
+        {
+            // Wait up to 60 seconds for the move list to have an odd number of moves
+
+            wait.Until(driver => {
+                var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+                var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+                int lastMove;
+                int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+                return lastMove % 2 == 1;
+            });
+        }
+        else
+        {
+            wait.Until(driver => {
+                var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+                var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+                int lastMove;
+                int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+                return lastMove % 2 == 0;
+            });
+        }
     }
 
 }
