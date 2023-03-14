@@ -15,11 +15,11 @@ public class Scraper
     public Scraper()
     {
         driver = new ChromeDriver();
-        NavigateToWebsite();
+        /*NavigateToWebsite();
         LogIn("jagabomba@hotmail.com", "Jagabomba9");
         //PlayComputer();
         FindGame();
-        FindPlayerColor();
+        FindPlayerColor();*/
     }
 
     public void NavigateToWebsite()
@@ -110,22 +110,23 @@ public class Scraper
     }
 
     //Return the players playing color
-    public void FindPlayerColor()
+    public bool FindPlayerColor()
     {
-        // Find the clock element
-        IWebElement clockElement = driver.FindElement(By.CssSelector(".clock-component.clock-top"));
+        // Find the <chess-board> element
+        var chessBoardElement = driver.FindElement(By.CssSelector("chess-board"));
 
-        // Get the value of the "class" attribute
-        string classValue = clockElement.GetAttribute("class");
+        // Check the value of its "class" attribute
+        var isPlayingAsWhite = chessBoardElement.GetAttribute("class") == "board";
 
-        if (classValue.Contains("clock-black"))
+        // Print the result
+        if (isPlayingAsWhite)
         {
-            playsAsWhite = true;
+            return true;
         }
         //classValue.Contains("clock-white")
         else
         {
-            playsAsWhite = false;
+            return false;
         }
 
     }
