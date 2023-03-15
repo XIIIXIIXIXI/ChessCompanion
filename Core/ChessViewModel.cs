@@ -3,12 +3,15 @@ using ChessCompanion.MVVM.Model;
 using ChessCompanion.MVVM.Utility;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace ChessCompanion
 {
     public class ChessViewModel : INotifyPropertyChanged
     {
         Scraper scraper = new Scraper();
+        ChessBoard board = new ChessBoard();
+        ChessEngine engine = new ChessEngine();
         private MainState _state = new MainState();
         public MainState State
         {
@@ -28,12 +31,20 @@ namespace ChessCompanion
 
         public void UpdateMoves()
         {
+            board.ModifyBoard(scraper.ExtractChessPieces());
+            State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
+            engine.setFENPosition(State.FEN);
+            State.Moves = engine.getBestMove();
 
         }
-
-
-
-
+        public void WaitForOpponentToMove()
+        {
+            scraper.WaitForOpponentToMove();
+        }
+        public void WaitForPlayerToMove()
+        {
+            scraper.WaitForPlayerToMove();
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

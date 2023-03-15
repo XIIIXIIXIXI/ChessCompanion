@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChessCompanion.MVVM.ViewModel;
 
 namespace ChessCompanion
 {
@@ -20,13 +21,16 @@ namespace ChessCompanion
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ChessViewModel _viewModel;
+        private readonly ChessViewModel viewModel;
+        
         public MainWindow()
         {
             InitializeComponent();
 
-            _viewModel = new ChessViewModel();
-            DataContext = _viewModel;
+            viewModel = new ChessViewModel();
+            DataContext = viewModel;
+
+            Task.Run(() => ChessGameTracker.TestFindGame(viewModel));
         }
     }
 }

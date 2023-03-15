@@ -28,14 +28,14 @@
                FontSize="22"
                Grid.Row="0"/>
 
-            <TextBlock Text="{Binding FEN}"
+            <TextBlock Text="{Binding State.FEN}"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"
                Foreground="White"
                FontSize="14"
                Grid.Row="1"/>
 
-            <TextBlock Text="{Binding BestMove}"
+            <TextBlock Text="{Binding State.Moves}"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"
                Foreground="White"

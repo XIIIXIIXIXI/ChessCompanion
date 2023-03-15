@@ -17,16 +17,17 @@ public class Scraper
     public Scraper()
     {
         driver = new ChromeDriver();
-        /*NavigateToWebsite();
-        LogIn("jagabomba@hotmail.com", "Jagabomba9");
-        //PlayComputer();
-        FindGame();
-        FindPlayerColor();*/
+        //NavigateToWebsite();
+        //LogIn("jagabomba@hotmail.com", "Jagabomba9");
+        PlayComputer();
+        //FindGame();
+        FindPlayerColor();
     }
 
     public void NavigateToWebsite()
     {
         driver.Navigate().GoToUrl("https://www.chess.com/login");
+       
     }
     public void LogIn(string username, string password)
     {
@@ -49,6 +50,7 @@ public class Scraper
     }
     public void PlayComputer()
     {
+        driver.Navigate().GoToUrl("https://www.chess.com/play/computer");
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100000));
         wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("https://www.chess.com/play/computer"));
 
@@ -87,45 +89,17 @@ public class Scraper
         int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
         if (lastMove % 2 == 0)
         {
-            return 'b';
+            return 'w';
         }
         else if (lastMove % 2 == 1)
         {
-            return 'w';
+            return 'b';
         }
         else
         {
             return 'x';
         }
-        /*
-        // Find the clock element
-        IWebElement clockElement = driver.FindElement(By.CssSelector(".clock-component.clock-top"));
-
-        // Get the value of the "class" attribute
-        string classValue = clockElement.GetAttribute("class");
-
-        // Check if the "clock-white" class is present
-
-        //opponent turn and black
-        if (classValue.Contains("clock-player-turn") && classValue.Contains("clock-black"))
-        {
-            return 'b';
-        }
-        //your turn and white
-        else if (classValue.Contains("clock-black"))
-        {
-            return 'w';
-        }
-        //opponent turn and white
-        else if (classValue.Contains("clock-white") && classValue.Contains("clock-player-turn"))
-        {
-            return 'w';
-        }
-        //your turn and black
-        else
-        {
-            return 'b';
-        }*/
+        
     }
 
 
