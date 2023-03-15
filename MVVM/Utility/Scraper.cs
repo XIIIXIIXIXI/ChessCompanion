@@ -81,6 +81,23 @@ public class Scraper
     }
     public char BlackOrWhiteToMove()
     {
+        var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+        var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+        int lastMove;
+        int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+        if (lastMove % 2 == 0)
+        {
+            return 'b';
+        }
+        else if (lastMove % 2 == 1)
+        {
+            return 'w';
+        }
+        else
+        {
+            return 'x';
+        }
+        /*
         // Find the clock element
         IWebElement clockElement = driver.FindElement(By.CssSelector(".clock-component.clock-top"));
 
@@ -108,8 +125,10 @@ public class Scraper
         else
         {
             return 'b';
-        }
+        }*/
     }
+
+
 
     //Return the players playing color
     public void FindPlayerColor()

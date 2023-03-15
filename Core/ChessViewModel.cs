@@ -1,4 +1,5 @@
-﻿using ChessCompanion.MVVM.Model;
+﻿using ChessCompanion.Core;
+using ChessCompanion.MVVM.Model;
 using ChessCompanion.MVVM.Utility;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -7,8 +8,51 @@ namespace ChessCompanion
 {
     public class ChessViewModel : INotifyPropertyChanged
     {
+        Scraper scraper = new Scraper();
+        private MainState _state = new MainState();
+        public MainState State
+        {
+            get { return _state; }
+            set
+            {
+                _state = value;
+                OnPropertyChanged(nameof(State));
+            }
+        }
+
+        public void UpdatePlayerColor()
+        {
+            scraper.FindPlayerColor();
+            State.IsWhite = scraper.isWhite;
+        }
+
+        public void UpdateMoves()
+        {
+
+        }
+
+
+
+
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}
+
+
+
+
+
+
+    /*
+
         private ChessEngine engine;
-        private Scraper scraper;
         private ChessBoard board;
 
         private string _fen;
@@ -87,4 +131,4 @@ namespace ChessCompanion
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-}
+}*/

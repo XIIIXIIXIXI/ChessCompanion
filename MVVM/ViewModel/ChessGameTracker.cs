@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ChessCompanion.MVVM.ViewModel
-{
+{/*
     class ChessGameTracker
     {
 
@@ -32,6 +32,6 @@ namespace ChessCompanion.MVVM.ViewModel
                 scraper.WaitForPlayerToMove();
             }
         }
-    }
+    }*/
 
 }
