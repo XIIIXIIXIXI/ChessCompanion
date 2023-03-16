@@ -20,7 +20,7 @@ namespace ChessCompanion.MVVM.ViewModel
             {
                 viewModel.WaitForOpponentToMove();
                
-                viewModel.UpdateMoves();
+                viewModel.GetBestMoveWithInfo();
                 viewModel.WaitForPlayerToMove();
             }
         }

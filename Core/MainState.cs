@@ -35,14 +35,24 @@ namespace ChessCompanion.Core
             }
         }
 
-        private string _cp = "";
-        public string CP
+        private int _cp = 0;
+        public int CP
         {
             get { return _cp; }
             set
             {
                 _cp = value;
                 OnPropertyChanged(nameof(CP));
+            }
+        }
+        private string _pv = "";
+        public string PV
+        {
+            get { return _pv; }
+            set
+            {
+                _pv = value;
+                OnPropertyChanged(nameof(PV));
             }
         }
 

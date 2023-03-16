@@ -1,6 +1,7 @@
 ﻿using ChessCompanion.Core;
 using ChessCompanion.MVVM.Model;
 using ChessCompanion.MVVM.Utility;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Documents;
@@ -11,8 +12,9 @@ namespace ChessCompanion
     {
         Scraper scraper = new Scraper();
         ChessBoard board = new ChessBoard();
-        ChessEngine engine = new ChessEngine();
+        IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
         private MainState _state = new MainState();
+
         public MainState State
         {
             get { return _state; }
@@ -29,12 +31,29 @@ namespace ChessCompanion
             State.IsWhite = scraper.isWhite;
         }
 
-        public void UpdateMoves()
+        public void GetBestMove()
+        {
+           
+            board.ModifyBoard(scraper.ExtractChessPieces());
+            State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
+            engine.SetPosition(State.FEN);
+            State.Moves = engine.GetBestMove(1000);
+            //SET FEN POSITION HERE
+            //GET BEST MOVE HERE
+        }
+        public void GetBestMoveWithInfo()
         {
             board.ModifyBoard(scraper.ExtractChessPieces());
             State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
-            engine.setFENPosition(State.FEN);
-            State.Moves = engine.getBestMove();
+            engine.SetPosition(State.FEN);
+            // Get the best move, PV, and score
+            (string bestMove, int cp, string pv) result = engine.GetBestMoveWithInfo(1000);
+
+            // Save the values to variables
+            State.Moves = result.bestMove;
+            State.PV = result.pv;
+            State.CP = result.cp;
+            
 
         }
         public void WaitForOpponentToMove()
