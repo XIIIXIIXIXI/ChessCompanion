@@ -39,13 +39,13 @@ namespace ChessCompanion.MVVM.Utility
             return WaitForResponse("bestmove").Split(' ')[1];
         }
 
-        public (string bestMove, int cp, string pv) GetBestMoveWithInfo(int searchTimeMs)
+        public (string bestMove, int? cp, string pv) GetBestMoveWithInfo(int searchTimeMs)
         {
             SendCommand($"go movetime {searchTimeMs}");
 
             string output = "";
             string bestMove = "";
-            int cp = 0;
+            int? cp = null;
             string pv = "";
 
             while (true)
@@ -65,9 +65,24 @@ namespace ChessCompanion.MVVM.Utility
                     string[] fields = output.Split(' ');
                     for (int i = 0; i < fields.Length - 1; i++)
                     {
-                        if (fields[i] == "cp")
+                        if (fields[i] == "score")
                         {
-                            cp = int.Parse(fields[i + 1]);
+                            if (fields[i + 1] == "mate")
+                            {
+                                // This is a mate in X moves
+                                cp = int.Parse(fields[i + 2]);
+                                if (fields[i + 2].StartsWith("-"))
+                                {
+                                    cp = -cp; // Black to mate
+                                }
+                                cp = 10000 + cp; // Add 10000 to distinguish from regular centipawn values
+                            }
+
+                            else if (fields[i+1] == "cp")
+                            {
+                                // This is a regular centipawn value
+                                cp = int.Parse(fields[i + 2]);
+                            }
                         }
                         else if (fields[i] == "pv")
                         {

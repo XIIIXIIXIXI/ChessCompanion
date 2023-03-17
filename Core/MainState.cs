@@ -35,8 +35,8 @@ namespace ChessCompanion.Core
             }
         }
 
-        private int _cp = 0;
-        public int CP
+        private int? _cp = 0;
+        public int? CP
         {
             get { return _cp; }
             set
