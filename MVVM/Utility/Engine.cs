@@ -71,10 +71,10 @@ namespace ChessCompanion.MVVM.Utility
                             {
                                 // This is a mate in X moves
                                 cp = int.Parse(fields[i + 2]);
-                                if (fields[i + 2].StartsWith("-"))
+                                /*if (fields[i + 2].StartsWith("-"))
                                 {
                                     cp = -cp; // Black to mate
-                                }
+                                }*/
                                 cp = 10000 + cp; // Add 10000 to distinguish from regular centipawn values
                             }
 

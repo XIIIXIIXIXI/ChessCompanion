@@ -1,18 +1,25 @@
-﻿using OpenQA.Selenium;
+﻿using ChessCompanion.MVVM.Utility;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
+
 
 public class Scraper
 {
     public IWebDriver driver { get; private set; }
     private readonly Dictionary<int, string> movesList = new Dictionary<int, string>();
     public bool isWhite;
+    private int squareWidth;
+    private IWebElement gameboard;
+
 
     public Scraper()
     {
@@ -20,7 +27,9 @@ public class Scraper
         //NavigateToWebsite();
         //LogIn("jagabomba@hotmail.com", "Jagabomba9");
         PlayComputer();
+
         //FindGame();
+        CaptureBoardPosition();
         FindPlayerColor();
     }
 
@@ -80,6 +89,11 @@ public class Scraper
         IReadOnlyCollection<IWebElement> chessPieceElements = driver.FindElements(By.CssSelector("div.piece"));
 
         return chessPieceElements;
+    }
+
+    public void SetUpRemoteBoard()
+    {
+        IWebElement element = driver.FindElement(By.Id("myElement"));
     }
     public char BlackOrWhiteToMove()
     {
@@ -260,6 +274,61 @@ public class Scraper
                 return lastMove % 2 == 0;
             });
         }
+    }
+
+    public void MakeMove(string move)
+    {
+        //IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
+        //IWebElement gameBoard = driver.FindElement(By.ClassName("coordinates"));
+
+        // Get the square width and offsets
+        int squareWidth = this.squareWidth;
+        int offsetX = this.gameboard.Location.X;
+        int offsetY = gameboard.Location.Y;
+
+        // Mouse down on the center of the e2 square
+        //int clientX = squareWidth * 4 + offsetX + squareWidth / 2;
+        //int clientY = squareWidth * 6 + offsetY + squareWidth / 2;
+
+        // Get the source and destination squares
+        string sourceSquare = move.Substring(0, 2);
+        string destSquare = move.Substring(2, 2);
+
+        // Map the file and rank characters to indices
+        int fileIndex = ChessConstants.FileLookup[sourceSquare[0]];
+
+        sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
+
+        
+
+        // Get the source square element
+        IWebElement sourceElement = driver.FindElement(By.CssSelector(".square-" + sourceSquare));
+
+        // Calculate the destination coordinates
+        int destX = offsetX + (int)(squareWidth * (destSquare[0] - 'a' + 0.5));
+        int destY = offsetY + (int)(squareWidth * (8 - int.Parse(destSquare[1].ToString()) + 0.5));
+        int destFX = destX - sourceElement.Location.X - (squareWidth / 2);
+        int destFY = destY - sourceElement.Location.Y  - (squareWidth / 2);
+
+
+        // Click and drag the piece from the source square to the destination coordinates
+        Actions actions = new Actions(driver);
+        actions.MoveToElement(sourceElement)
+               .ClickAndHold()
+               .MoveByOffset(destFX, destFY)
+               .Release()
+               .Perform();
+
+    }
+
+    public void CaptureBoardPosition()
+    {
+        //IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
+        IWebElement piece = driver.FindElement(By.CssSelector("#board-single > div.piece.br.square-18"));
+
+        IWebElement gameBoard = driver.FindElement(By.ClassName("coordinates"));
+        this.squareWidth = piece.Size.Width;
+        this.gameboard = gameBoard;
     }
 
 }

@@ -14,13 +14,14 @@ namespace ChessCompanion.MVVM.ViewModel
        
         public static void TestFindGame(ChessViewModel viewModel)
         {
-            
+           
 
             while (true)
             {
                 viewModel.WaitForOpponentToMove();
                
                 viewModel.GetBestMoveWithInfo();
+                viewModel.makeMove();
                 viewModel.WaitForPlayerToMove();
             }
         }
