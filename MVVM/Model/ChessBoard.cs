@@ -1,185 +1,137 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessCompanion.MVVM.Model
 {
+    // ChessBoard class definition
     public class ChessBoard
     {
-        private readonly ChessPiece[,] board = new ChessPiece[8, 8];
+        // Private 2D array to represent the chess board
+        private readonly ChessPiece[,] board;
 
+        // Constructor to initialize the chess board
         public ChessBoard()
         {
-            // Initialize the board with empty squares
-            for (int row = 0; row < 8; row++)
+            board = new ChessPiece[8, 8];
+            InitializeBoard();
+        }
+
+        // Private method to set all squares of the chess board to empty
+        private void InitializeBoard()
+        {
+            for (int row = 0; row < board.GetLength(0); row++)
             {
-                for (int col = 0; col < 8; col++)
+                for (int col = 0; col < board.GetLength(1); col++)
                 {
                     board[row, col] = ChessPiece.Empty;
                 }
             }
         }
 
+        // Indexer to access the chess board
         public ChessPiece this[int x, int y]
         {
-            get { return board[x, y]; }
-            set { board[x, y] = value; }
+            get => board[x, y];
+            set => board[x, y] = value;
         }
-        public void InitializeBoard()
+
+        // Method to clear the chess board
+        public void ClearBoard()
         {
-            // Set up the white pieces
-            this[0, 0] = new ChessPiece(PieceType.Rook, PieceColor.White);
-            this[0, 1] = new ChessPiece(PieceType.Knight, PieceColor.White);
-            this[0, 2] = new ChessPiece(PieceType.Bishop, PieceColor.White);
-            this[0, 3] = new ChessPiece(PieceType.Queen, PieceColor.White);
-            this[0, 4] = new ChessPiece(PieceType.King, PieceColor.White);
-            this[0, 5] = new ChessPiece(PieceType.Bishop, PieceColor.White);
-            this[0, 6] = new ChessPiece(PieceType.Knight, PieceColor.White);
-            this[0, 7] = new ChessPiece(PieceType.Rook, PieceColor.White);
-
-
-            for (int i = 0; i < 8; i++)
-            {
-                this[1, i] = new ChessPiece(PieceType.Pawn, PieceColor.White);
-            }
-
-            // Set up the black pieces
-            this[7, 0] = new ChessPiece(PieceType.Rook, PieceColor.Black);
-            this[7, 1] = new ChessPiece(PieceType.Knight, PieceColor.Black);
-            this[7, 2] = new ChessPiece(PieceType.Bishop, PieceColor.Black);
-            this[7, 3] = new ChessPiece(PieceType.Queen, PieceColor.Black);
-            this[7, 4] = new ChessPiece(PieceType.King, PieceColor.Black);
-            this[7, 5] = new ChessPiece(PieceType.Bishop, PieceColor.Black);
-            this[7, 6] = new ChessPiece(PieceType.Knight, PieceColor.Black);
-            this[7, 7] = new ChessPiece(PieceType.Rook, PieceColor.Black);
-
-            for (int i = 0; i < 8; i++)
-            {
-                this[6, i] = new ChessPiece(PieceType.Pawn, PieceColor.Black);
-            }
-
-            // Fill the rest of the board with empty squares
-            for (int row = 2; row < 6; row++)
-            {
-                for (int col = 0; col < 8; col++)
-                {
-                    this[row, col] = ChessPiece.Empty;
-                }
-            }
-        }
-        public void UpdateBoard(int startX, int startY, int endX, int endY)
-        {
-            ChessPiece piece = board[startX, startY];
-            board[startX, startY] = ChessPiece.Empty;
-            board[endX, endY] = piece;
+            InitializeBoard();
         }
 
-        public void EmptyBoard()
-        {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            
-
-            for (int row = 0; row < 8; row++)
-            {
-                for (int col = 0; col < 8; col++)
-                {
-                    board[row, col] = ChessPiece.Empty;
-                }
-            }
-            // the code that you want to measure comes here
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Debug.WriteLine("EmptyBoard: " + elapsedMs);
-        }
+        // Method to modify the chess board based on the input chess piece elements
         public void ModifyBoard(IReadOnlyCollection<IWebElement> chessPieceElements)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
+
             
-            EmptyBoard();
+            ClearBoard();
+
+            // Loop through the chess piece elements and update the corresponding squares on the chess board
             foreach (var chessPieceElement in chessPieceElements)
             {
-                 try
-                 {
-                    
+                // Get the class attribute value of the chess piece element and split it into parts
+                var classAttributeValue = chessPieceElement.GetAttribute("class");
+                var classAttributeParts = classAttributeValue.Split(' ');
 
-                    var classAttributeValue = chessPieceElement.GetAttribute("class");
-                    var classAttributeParts = classAttributeValue.Split(' ');
+                // Ignore the chess piece element if it doesn't have enough class attribute parts
+                if (classAttributeParts.Length < 3)
+                {
+                    continue;
+                }
 
-                    var position = classAttributeParts[2]; // Get the position class (e.g. "square-88")
-                    var positionNumbers = position.Substring(7); // Get the position numbers (e.g. "88")
-                    var letter = int.Parse(positionNumbers[0].ToString()) - 1; // Get the first digit as x (e.g. 8)
-                    var number = int.Parse(positionNumbers[1].ToString()) - 1; // Get the second digit as y (e.g. 8)
-                    var type = classAttributeParts[1]; // Get the type class (e.g. "bp")
+                // Get the position and type of the chess piece from the class attribute parts
+                var position = classAttributeParts[2];
+                var positionNumbers = position.Substring(7);
+                var letter = int.Parse(positionNumbers[0].ToString()) - 1;
+                var number = int.Parse(positionNumbers[1].ToString()) - 1;
+                var type = classAttributeParts[1];
 
-
-
-                    board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
-                
-                 }
-                 catch
-                 {
-                     continue;
-                 }
+                // Translate the chess piece type string to the corresponding ChessPiece enum and update the board
+                board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
             }
-            // the code that you want to measure comes here
+
             watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Debug.WriteLine("ModifyBoard: " + elapsedMs);
+            Debug.WriteLine($"ModifyBoard: {watch.ElapsedMilliseconds} ms");
         }
 
-        public string GetFEN(char toMove)
+        
+        public string GetFENString(char toMove)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            
-            StringBuilder fen = new StringBuilder();
-            int emptySquareCount = 0;
-            for (int row = 7; row >= 0; row--)
-            {
-                for (int col = 0; col < 8; col++)
-                {
-                    ChessPiece piece = board[row, col];
+            var watch = Stopwatch.StartNew();
 
-                    //if square is empty
+            var fen = new StringBuilder();
+            var emptySquareCount = 0;
+
+            // Loop through the rows and columns of the chess board to build the FEN string
+            for (int row = board.GetLength(0) - 1; row >= 0; row--)
+            {
+                for (int col = 0; col < board.GetLength(1); col++)
+                {
+                    var piece = board[row, col];
+
+                    // If the square is empty, increment the empty square count
                     if (piece == ChessPiece.Empty)
                     {
                         emptySquareCount++;
                     }
+                    // If the square is not empty, append the piece FEN character to the FEN string and reset the empty square count
                     else
                     {
-                        //if there was empty squares before this piece
                         if (emptySquareCount > 0)
                         {
                             fen.Append(emptySquareCount);
                             emptySquareCount = 0;
                         }
+
                         fen.Append(ChessPiece.GetFenChar(piece));
                     }
                 }
-                // If there were empty squares at the end of the column
+
+                // If there are any empty squares left in the row, append their count to the FEN string.
                 if (emptySquareCount > 0)
                 {
                     fen.Append(emptySquareCount);
                     emptySquareCount = 0;
                 }
 
-                // If it's not the last row, append the separator
                 if (row != 0)
                 {
                     fen.Append('/');
                 }
             }
+
             fen.Append(' ');
             fen.Append(toMove);
-            // the code that you want to measure comes here
+
             watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Debug.WriteLine("FEN: " + elapsedMs);
+            Debug.WriteLine($"FEN: {watch.ElapsedMilliseconds} ms");
+
             return fen.ToString();
         }
-
     }
 }

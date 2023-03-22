@@ -35,7 +35,7 @@ namespace ChessCompanion
         {
            
             board.ModifyBoard(scraper.ExtractChessPieces());
-            State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
+            State.FEN = board.GetFENString(scraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             State.Moves = engine.GetBestMove(300);
             //SET FEN POSITION HERE
@@ -44,7 +44,7 @@ namespace ChessCompanion
         public void GetBestMoveWithInfo()
         {
             board.ModifyBoard(scraper.ExtractChessPieces());
-            State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
+            State.FEN = board.GetFENString(scraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             // Get the best move, PV, and score
             (string bestMove, int? cp, string pv) result = engine.GetBestMoveWithInfo(300);
