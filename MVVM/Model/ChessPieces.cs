@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessCompanion.MVVM.Model
 {
@@ -21,9 +16,7 @@ namespace ChessCompanion.MVVM.Model
         Rook,
         Queen,
         King,
-        Empty,
-
-
+        Empty
     }
 
     public class ChessPiece
@@ -37,97 +30,55 @@ namespace ChessCompanion.MVVM.Model
             Color = color;
         }
 
-        public static ChessPiece Empty = new ChessPiece(PieceType.Empty, PieceColor.White);
+        public static readonly ChessPiece Empty = new ChessPiece(PieceType.Empty, PieceColor.White);
 
         public static char GetFenChar(ChessPiece piece)
         {
-            if (piece.Color == PieceColor.White)
+            return piece.Color switch
             {
-                switch (piece.Type)
+                PieceColor.White => piece.Type switch
                 {
-                    case PieceType.Pawn:
-                        return 'P';
-                    case PieceType.Knight:
-                        return 'N';
-                    case PieceType.Bishop:
-                        return 'B';
-                    case PieceType.Rook:
-                        return 'R';
-                    case PieceType.Queen:
-                        return 'Q';
-                    case PieceType.King:
-                        return 'K';
-                    default:
-                        throw new ArgumentException("Invalid piece type");
-                }
-            }
-            else if (piece.Color == PieceColor.Black)
-            {
-                switch (piece.Type)
+                    PieceType.Pawn => 'P',
+                    PieceType.Knight => 'N',
+                    PieceType.Bishop => 'B',
+                    PieceType.Rook => 'R',
+                    PieceType.Queen => 'Q',
+                    PieceType.King => 'K',
+                    _ => throw new ArgumentException("Invalid piece type")
+                },
+                PieceColor.Black => piece.Type switch
                 {
-                    case PieceType.Pawn:
-                        return 'p';
-                    case PieceType.Rook:
-                        return 'r';
-                    case PieceType.Knight:
-                        return 'n';
-                    case PieceType.Bishop:
-                        return 'b';
-                    case PieceType.Queen:
-                        return 'q';
-                    case PieceType.King:
-                        return 'k';
-                    default:
-                        throw new ArgumentException("Invalid piece type");
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid piece color");
-            }
+                    PieceType.Pawn => 'p',
+                    PieceType.Knight => 'n',
+                    PieceType.Bishop => 'b',
+                    PieceType.Rook => 'r',
+                    PieceType.Queen => 'q',
+                    PieceType.King => 'k',
+                    _ => throw new ArgumentException("Invalid piece type")
+                },
+                _ => throw new ArgumentException("Invalid piece color")
+            };
         }
+
         public static ChessPiece TranslateStringToChessPiece(string pieceString)
         {
-            PieceType type;
-            PieceColor color;
-
-            // Determine the piece type
-            switch (pieceString[1])
+            var color = pieceString[0] switch
             {
-                case 'p':
-                    type = PieceType.Pawn;
-                    break;
-                case 'n':
-                    type = PieceType.Knight;
-                    break;
-                case 'b':
-                    type = PieceType.Bishop;
-                    break;
-                case 'r':
-                    type = PieceType.Rook;
-                    break;
-                case 'q':
-                    type = PieceType.Queen;
-                    break;
-                case 'k':
-                    type = PieceType.King;
-                    break;
-                default:
-                    throw new ArgumentException("Invalid piece string: " + pieceString);
-            }
+                'w' => PieceColor.White,
+                'b' => PieceColor.Black,
+                _ => throw new ArgumentException("Invalid piece string: " + pieceString)
+            };
 
-            // Determine the piece color
-            switch (pieceString[0])
+            var type = pieceString[1] switch
             {
-                case 'w':
-                    color = PieceColor.White;
-                    break;
-                case 'b':
-                    color = PieceColor.Black;
-                    break;
-                default:
-                    throw new ArgumentException("Invalid piece string: " + pieceString);
-            }
+                'p' => PieceType.Pawn,
+                'n' => PieceType.Knight,
+                'b' => PieceType.Bishop,
+                'r' => PieceType.Rook,
+                'q' => PieceType.Queen,
+                'k' => PieceType.King,
+                _ => throw new ArgumentException("Invalid piece string: " + pieceString)
+            };
 
             return new ChessPiece(type, color);
         }

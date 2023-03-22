@@ -41,6 +41,7 @@ namespace ChessCompanion.MVVM.Utility
 
         public (string bestMove, int? cp, string pv) GetBestMoveWithInfo(int searchTimeMs)
         {
+           
             SendCommand($"go movetime {searchTimeMs}");
 
             string output = "";
@@ -96,7 +97,7 @@ namespace ChessCompanion.MVVM.Utility
                     }
                 }
             }
-
+            
             return (bestMove, cp, pv);
         }
 

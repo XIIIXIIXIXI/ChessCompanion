@@ -80,6 +80,9 @@ namespace ChessCompanion.MVVM.Model
 
         public void EmptyBoard()
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
+
             for (int row = 0; row < 8; row++)
             {
                 for (int col = 0; col < 8; col++)
@@ -87,34 +90,51 @@ namespace ChessCompanion.MVVM.Model
                     board[row, col] = ChessPiece.Empty;
                 }
             }
+            // the code that you want to measure comes here
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Debug.WriteLine("EmptyBoard: " + elapsedMs);
         }
         public void ModifyBoard(IReadOnlyCollection<IWebElement> chessPieceElements)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
             EmptyBoard();
             foreach (var chessPieceElement in chessPieceElements)
             {
-                try
-                {
-                    var position = chessPieceElement.GetAttribute("class").Split(' ')[2]; // Get the position class (e.g. "square-88")
+                 try
+                 {
+                    
+
+                    var classAttributeValue = chessPieceElement.GetAttribute("class");
+                    var classAttributeParts = classAttributeValue.Split(' ');
+
+                    var position = classAttributeParts[2]; // Get the position class (e.g. "square-88")
                     var positionNumbers = position.Substring(7); // Get the position numbers (e.g. "88")
                     var letter = int.Parse(positionNumbers[0].ToString()) - 1; // Get the first digit as x (e.g. 8)
                     var number = int.Parse(positionNumbers[1].ToString()) - 1; // Get the second digit as y (e.g. 8)
-                    var type = chessPieceElement.GetAttribute("class").Split(' ')[1]; // Get the type class (e.g. "bp")
+                    var type = classAttributeParts[1]; // Get the type class (e.g. "bp")
 
 
 
                     board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
-                    // Do something with the position and type, such as adding them to a list or dictionary
-                }
-                catch
-                {
-                    continue;
-                }
+                
+                 }
+                 catch
+                 {
+                     continue;
+                 }
             }
+            // the code that you want to measure comes here
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Debug.WriteLine("ModifyBoard: " + elapsedMs);
         }
 
         public string GetFEN(char toMove)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
             StringBuilder fen = new StringBuilder();
             int emptySquareCount = 0;
             for (int row = 7; row >= 0; row--)
@@ -154,6 +174,10 @@ namespace ChessCompanion.MVVM.Model
             }
             fen.Append(' ');
             fen.Append(toMove);
+            // the code that you want to measure comes here
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Debug.WriteLine("FEN: " + elapsedMs);
             return fen.ToString();
         }
 

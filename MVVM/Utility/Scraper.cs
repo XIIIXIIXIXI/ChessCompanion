@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
+using System.Windows.Input;
 
 
 public class Scraper
@@ -36,7 +37,7 @@ public class Scraper
     public void NavigateToWebsite()
     {
         driver.Navigate().GoToUrl("https://www.chess.com/login");
-       
+
     }
     public void LogIn(string username, string password)
     {
@@ -63,7 +64,7 @@ public class Scraper
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100000));
         wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("https://www.chess.com/play/computer"));
 
-        Thread.Sleep(15000);
+
     }
 
     public void FindGame()
@@ -87,6 +88,7 @@ public class Scraper
 
         // Find all the chess piece elements using the CSS selector
         IReadOnlyCollection<IWebElement> chessPieceElements = driver.FindElements(By.CssSelector("div.piece"));
+
 
         return chessPieceElements;
     }
@@ -113,7 +115,7 @@ public class Scraper
         {
             return 'x';
         }
-        
+
     }
 
 
@@ -131,7 +133,7 @@ public class Scraper
         if (isPlayingAsWhite)
         {
             isWhite = true;
-       
+
         }
         //classValue.Contains("clock-white")
         else
@@ -139,10 +141,14 @@ public class Scraper
             isWhite = false;
         }
     }
+    
+
+       
     public List<string> GetMoveList()
     {
-        // Find the moves list
+        
         var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+        
         if (moveListElem == null)
         {
             return null;
@@ -323,8 +329,8 @@ public class Scraper
 
     public void CaptureBoardPosition()
     {
-        //IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
-        IWebElement piece = driver.FindElement(By.CssSelector("#board-single > div.piece.br.square-18"));
+        IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
+        //IWebElement piece = driver.FindElement(By.CssSelector("#board-single > div.piece.br.square-18"));
 
         IWebElement gameBoard = driver.FindElement(By.ClassName("coordinates"));
         this.squareWidth = piece.Size.Width;

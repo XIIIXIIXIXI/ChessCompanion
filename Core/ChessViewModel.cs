@@ -37,7 +37,7 @@ namespace ChessCompanion
             board.ModifyBoard(scraper.ExtractChessPieces());
             State.FEN = board.GetFEN(scraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
-            State.Moves = engine.GetBestMove(1000);
+            State.Moves = engine.GetBestMove(300);
             //SET FEN POSITION HERE
             //GET BEST MOVE HERE
         }
