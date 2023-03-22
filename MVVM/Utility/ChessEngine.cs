@@ -1,10 +1,7 @@
 ﻿using Stockfish.NET;
 using Stockfish.NET.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ChessCompanion.MVVM.Utility
 {

@@ -12,7 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChessCompanion.MVVM.Model;
+using ChessCompanion.MVVM.Utility;
 using ChessCompanion.MVVM.ViewModel;
+using OpenQA.Selenium.Chrome;
 
 namespace ChessCompanion
 {
@@ -26,8 +29,14 @@ namespace ChessCompanion
         public MainWindow()
         {
             InitializeComponent();
+            var driver = new ChromeDriver();
+            var scraper = new Scraper(driver);
+            var gameScraper = new GameScraper(driver);
+            var board = new ChessBoard();
+            IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
+            
 
-            viewModel = new ChessViewModel();
+            viewModel = new ChessViewModel(driver, scraper, board, engine, gameScraper);
             DataContext = viewModel;
 
             Task.Run(() => ChessGameTracker.TestFindGame(viewModel));

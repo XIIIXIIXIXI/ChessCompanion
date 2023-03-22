@@ -1,6 +1,8 @@
 ﻿using ChessCompanion.Core;
 using ChessCompanion.MVVM.Model;
 using ChessCompanion.MVVM.Utility;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -10,10 +12,22 @@ namespace ChessCompanion
 {
     public class ChessViewModel : INotifyPropertyChanged
     {
-        Scraper scraper = new Scraper();
-        ChessBoard board = new ChessBoard();
-        IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
+        private readonly IWebDriver driver;
+        private readonly Scraper scraper;
+        private readonly GameScraper gameScraper;
+        private readonly ChessBoard board;
+        private readonly IEngine engine;
         private MainState _state = new MainState();
+
+        public ChessViewModel(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper Gamescraper)
+        {
+            this.driver = driver;
+            this.scraper = scraper;
+            this.board = board;
+            this.engine = engine;
+            this.gameScraper = Gamescraper;
+        }
+        
 
         public MainState State
         {
@@ -27,15 +41,15 @@ namespace ChessCompanion
 
         public void UpdatePlayerColor()
         {
-            scraper.FindPlayerColor();
-            State.IsWhite = scraper.isWhite;
+            gameScraper.FindPlayerColor();
+            State.IsWhite = gameScraper.isWhite;
         }
 
         public void GetBestMove()
         {
            
-            board.ModifyBoard(scraper.ExtractChessPieces());
-            State.FEN = board.GetFENString(scraper.BlackOrWhiteToMove());
+            board.ModifyBoard(gameScraper.ExtractChessPieces());
+            State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             State.Moves = engine.GetBestMove(300);
             //SET FEN POSITION HERE
@@ -43,8 +57,8 @@ namespace ChessCompanion
         }
         public void GetBestMoveWithInfo()
         {
-            board.ModifyBoard(scraper.ExtractChessPieces());
-            State.FEN = board.GetFENString(scraper.BlackOrWhiteToMove());
+            board.ModifyBoard(gameScraper.ExtractChessPieces());
+            State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             // Get the best move, PV, and score
             (string bestMove, int? cp, string pv) result = engine.GetBestMoveWithInfo(300);
@@ -57,15 +71,15 @@ namespace ChessCompanion
         }
         public void makeMove()
         {
-            scraper.MakeMove(State.Moves);
+            gameScraper.MakeMove(State.Moves);
         }
         public void WaitForOpponentToMove()
         {
-            scraper.WaitForOpponentToMove();
+            gameScraper.WaitForOpponentToMove();
         }
         public void WaitForPlayerToMove()
         {
-            scraper.WaitForPlayerToMove();
+            gameScraper.WaitForPlayerToMove();
         }
 
 

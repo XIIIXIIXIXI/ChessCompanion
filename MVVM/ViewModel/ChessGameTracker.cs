@@ -1,5 +1,6 @@
 ﻿using ChessCompanion.MVVM.Model;
 using ChessCompanion.MVVM.Utility;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace ChessCompanion.MVVM.ViewModel
        
         public static void TestFindGame(ChessViewModel viewModel)
         {
+            
            //wait for game to start
            //if playing as white
            //else
