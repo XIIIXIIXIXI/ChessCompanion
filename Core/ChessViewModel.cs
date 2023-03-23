@@ -81,6 +81,23 @@ namespace ChessCompanion
         {
             gameScraper.WaitForPlayerToMove();
         }
+        public bool IsResignElementPresent()
+        {
+            return gameScraper.IsResignElementPresent();
+        }
+
+        public void WaitForResignElement(int seconds)
+        {
+            scraper.WaitForResignElement(seconds);
+        }
+        public void InitGameScraper()
+        {
+            gameScraper.Setup();
+        }
+        public bool PlayingAsWhite()
+        {
+            return gameScraper.isWhite;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

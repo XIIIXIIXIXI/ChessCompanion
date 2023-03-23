@@ -65,14 +65,32 @@ namespace ChessCompanion.MVVM.Model
                 }
 
                 // Get the position and type of the chess piece from the class attribute parts
+                
                 var position = classAttributeParts[2];
-                var positionNumbers = position.Substring(7);
-                var letter = int.Parse(positionNumbers[0].ToString()) - 1;
-                var number = int.Parse(positionNumbers[1].ToString()) - 1;
-                var type = classAttributeParts[1];
+                try
+                {
+                    var positionNumbers = position.Substring(7);
+                    var letter = int.Parse(positionNumbers[0].ToString()) - 1;
+                    var number = int.Parse(positionNumbers[1].ToString()) - 1;
+                    var type = classAttributeParts[1];
+                        // Translate the chess piece type string to the corresponding ChessPiece enum and update the board
+                    board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
+                }
+                catch
+                {
+                    var errorPosition = classAttributeParts[1];
+                    var positionNumbers = errorPosition.Substring(7);
+                    var letter = int.Parse(positionNumbers[0].ToString()) - 1;
+                    var number = int.Parse(positionNumbers[1].ToString()) - 1;
+                    var type = classAttributeParts[2];
+                    // Translate the chess piece type string to the corresponding ChessPiece enum and update the board
+                    board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
 
-                // Translate the chess piece type string to the corresponding ChessPiece enum and update the board
-                board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
+                }
+                
+                
+
+                
             }
 
             watch.Stop();

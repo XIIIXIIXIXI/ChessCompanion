@@ -16,21 +16,30 @@ namespace ChessCompanion.MVVM.ViewModel
        
         public static void TestFindGame(ChessViewModel viewModel)
         {
-            
-           //wait for game to start
-           //if playing as white
-           //else
-
-            while (true)
+          while(true)
             {
-                viewModel.WaitForOpponentToMove();
-               
-                //viewModel.GetBestMove();
-                viewModel.GetBestMoveWithInfo();
-                viewModel.makeMove();
-                viewModel.WaitForPlayerToMove();
-                Debug.WriteLine("------------");
+                //wait for game to start
+                viewModel.WaitForResignElement(1000);
+                viewModel.InitGameScraper();
+                if (viewModel.PlayingAsWhite())
+                {
+                    viewModel.State.Moves = "e2e4";
+                    viewModel.makeMove();
+                }
+
+                while (viewModel.IsResignElementPresent())
+                {
+                    viewModel.WaitForOpponentToMove();
+
+                    //viewModel.GetBestMove();
+                    viewModel.GetBestMoveWithInfo();
+                    viewModel.makeMove();
+                    
+                    viewModel.WaitForPlayerToMove();
+                    Debug.WriteLine("------------");
+                }
             }
+            
         }
     }
 

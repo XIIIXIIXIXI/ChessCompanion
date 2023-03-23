@@ -20,6 +20,11 @@ namespace ChessCompanion.MVVM.Utility
         public GameScraper(IWebDriver driver)
         {
             this.driver = driver;
+            //CaptureBoardPosition();
+            //FindPlayerColor();
+        }
+        public void Setup()
+        {
             CaptureBoardPosition();
             FindPlayerColor();
         }
@@ -79,15 +84,15 @@ namespace ChessCompanion.MVVM.Utility
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6000));
             if (isWhite)
             {
-                // Wait up to 60 seconds for the move list to have an odd number of moves
-
-                wait.Until(driver => {
-                    var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
-                    var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
-                    int lastMove;
-                    int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
-                    return lastMove % 2 == 0;
-                });
+                // Wait up to 6000 seconds for the move list to have an odd number of moves
+                
+                    wait.Until(driver => {
+                        var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
+                        var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
+                        int lastMove;
+                        int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
+                        return lastMove % 2 == 0 || !IsResignElementPresent();
+                    });
             }
             else
             {
@@ -96,7 +101,7 @@ namespace ChessCompanion.MVVM.Utility
                     var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
                     int lastMove;
                     int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
-                    return lastMove % 2 == 1;
+                    return lastMove % 2 == 1 || !IsResignElementPresent();
                 });
             }
         }
@@ -113,7 +118,7 @@ namespace ChessCompanion.MVVM.Utility
                     var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
                     int lastMove;
                     int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
-                    return lastMove % 2 == 1;
+                    return lastMove % 2 == 1 || !IsResignElementPresent();
                 });
             }
             else
@@ -123,7 +128,7 @@ namespace ChessCompanion.MVVM.Utility
                     var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
                     int lastMove;
                     int.TryParse(moves.Last().GetAttribute("data-ply"), out lastMove);
-                    return lastMove % 2 == 0;
+                    return lastMove % 2 == 0 || !IsResignElementPresent();
                 });
             }
         }
@@ -172,5 +177,30 @@ namespace ChessCompanion.MVVM.Utility
             this.squareWidth = piece.Size.Width;
             this.gameboard = gameBoard;
         }
+        public bool IsResignElementPresent()
+        {
+            //, span.icon-font-chess.flag.resign-button-icon
+            
+            try
+            {
+                 driver.FindElement(By.CssSelector("button[data-cy='Resign']"));
+                return true;
+                
+            }
+            catch (NoSuchElementException)
+            {
+                try
+                {
+                    driver.FindElement(By.CssSelector("button[data-cy='Abort']"));
+                    return true;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+                
+            }
+        }
     }
+    
 }

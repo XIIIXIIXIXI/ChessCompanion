@@ -77,6 +77,13 @@ public class Scraper
         wait.Until(ExpectedConditions.UrlContains("https://www.chess.com/game/live/"));
 
     }
+    
+
+    public void WaitForResignElement(int seconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.CssSelector("span.small-controls-icon.icon-font-chess.flag, span.icon-font-chess.flag.resign-button-icon")));
+    }
    
 
     
