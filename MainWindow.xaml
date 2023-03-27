@@ -58,6 +58,12 @@
                Foreground="White"
                FontSize="18"
                Grid.Row="4"/>
+            <TextBlock Text="{Binding State.Mate}"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               Foreground="White"
+               FontSize="18"
+               Grid.Row="4"/>
         </Grid>
 
     </Border>

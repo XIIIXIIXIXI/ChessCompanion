@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace ChessCompanion.MVVM.Utility
 {
@@ -39,7 +40,7 @@ namespace ChessCompanion.MVVM.Utility
             return WaitForResponse("bestmove").Split(' ')[1];
         }
 
-        public (string bestMove, int? cp, string pv) GetBestMoveWithInfo(int searchTimeMs)
+        public (string bestMove, int? cp, int? mate, bool promotion, string pv) GetBestMoveWithInfo(int searchTimeMs) 
         {
            
             SendCommand($"go movetime {searchTimeMs}");
@@ -47,6 +48,8 @@ namespace ChessCompanion.MVVM.Utility
             string output = "";
             string bestMove = "";
             int? cp = null;
+            int? mate = null;
+            bool promotion = false;
             string pv = "";
 
             while (true)
@@ -59,6 +62,10 @@ namespace ChessCompanion.MVVM.Utility
                 else if (output.StartsWith("bestmove"))
                 {
                     bestMove = output.Split(' ')[1];
+                    if (bestMove.Length > 4)
+                    {
+                        promotion = true;
+                    }
                     break;
                 }
                 else if (output.StartsWith("info"))
@@ -71,12 +78,12 @@ namespace ChessCompanion.MVVM.Utility
                             if (fields[i + 1] == "mate")
                             {
                                 // This is a mate in X moves
-                                cp = int.Parse(fields[i + 2]);
+                                mate = int.Parse(fields[i + 2]);
                                 /*if (fields[i + 2].StartsWith("-"))
                                 {
                                     cp = -cp; // Black to mate
                                 }*/
-                                cp = 10000 + cp; // Add 10000 to distinguish from regular centipawn values
+                                //cp = 10000 + cp;  Add 10000 to distinguish from regular centipawn values
                             }
 
                             else if (fields[i+1] == "cp")
@@ -98,7 +105,7 @@ namespace ChessCompanion.MVVM.Utility
                 }
             }
             
-            return (bestMove, cp, pv);
+            return (bestMove, cp, mate, promotion, pv);
         }
 
         private void SendCommand(string command)
@@ -120,6 +127,63 @@ namespace ChessCompanion.MVVM.Utility
             string command = $"setoption name {name} value {value}";
             SendCommand(command);
         }
+        public string AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove)
+        {
+            string lastMoveScore;
+            if (lastBestMove.FEN == currentMove.FEN)
+            {
+                lastMoveScore = "BestMove";
+            }
+            else
+            {
+                if (lastBestMove.mate != null)
+                {
+                    // if last move is losing mate, this move just escapes a mate
+                    // if last move is winning mate, this move is a missed win
+                    if (currentMove.mate == null)
+                    {
+                        lastMoveScore = lastBestMove.mate > 0 ? "MissedWin" : "Brilliant";
+                    }
+                    else
+                    {
+                        //both are mate
+                        lastMoveScore = lastBestMove.mate > 0 ? "Excellent" : "ResignWhite";
+                    }
+                }
+                else if (currentMove.mate != null)
+                {
+                    // brilliant if it found a mate, blunder if it moved into a mate
+                    lastMoveScore = currentMove.mate < 0 ? "Brilliant" : "Blunder";
+                }
+                else if (currentMove.cp != null && lastBestMove.cp != null) 
+                {
+                    int? evalDiff = -(currentMove.cp + lastBestMove.cp);
+                    if (evalDiff > 100)
+                        lastMoveScore = "Brilliant";
+                    else if (evalDiff > 0)
+                        lastMoveScore = "GreatFind";
+                    else if (evalDiff > -10)
+                        lastMoveScore = "BestMove";
+                    else if (evalDiff > -25)
+                        lastMoveScore = "Excellent";
+                    else if (evalDiff > -50)
+                        lastMoveScore = "Good";
+                    else if (evalDiff > -100)
+                        lastMoveScore = "Inaccuracy";
+                    else if (evalDiff > -250)
+                        lastMoveScore = "Mistake";
+                    else
+                        lastMoveScore = "Blunder";
+                }
+                else
+                {
+                    throw new ArgumentException("Analyzing last move error");
+                }
+            }
+            Debug.WriteLine("Value: " + lastMoveScore);
+            return lastMoveScore;
+        }
+
 
         public void Dispose()
         {

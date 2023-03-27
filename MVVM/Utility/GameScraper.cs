@@ -201,6 +201,7 @@ namespace ChessCompanion.MVVM.Utility
                 
             }
         }
+
     }
     
 }

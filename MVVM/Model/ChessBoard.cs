@@ -87,10 +87,7 @@ namespace ChessCompanion.MVVM.Model
                     board[number, letter] = ChessPiece.TranslateStringToChessPiece(type);
 
                 }
-                
-                
-
-                
+              
             }
 
             watch.Stop();
@@ -151,5 +148,28 @@ namespace ChessCompanion.MVVM.Model
 
             return fen.ToString();
         }
+        public string GetFENFromMove(string move, char toMove)
+        {
+            // Convert the move string to board coordinates
+            var fromCol = move[0] - 'a';
+            var fromRow = move[1] - '1';
+            var toCol = move[2] - 'a';
+            var toRow = move[3] - '1';
+
+            // Apply the move to the board
+            var piece = board[fromRow, fromCol];
+            board[fromRow, fromCol] = ChessPiece.Empty;
+            board[toRow, toCol] = piece;
+
+            var fen = GetFENString(toMove);
+
+            // Undo the move to restore the board to its previous state
+            board[toRow, toCol] = ChessPiece.Empty;
+            board[fromRow, fromCol] = piece;
+
+
+            return fen;
+        }
     }
+    
 }

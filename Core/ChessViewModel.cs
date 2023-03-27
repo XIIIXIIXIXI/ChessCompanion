@@ -18,6 +18,9 @@ namespace ChessCompanion
         private readonly ChessBoard board;
         private readonly IEngine engine;
         private MainState _state = new MainState();
+        private TopMove currentBestMove = new TopMove();
+        private TopMove lastBestMove = new TopMove();
+        //private string lastMoveScore;
 
         public ChessViewModel(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper Gamescraper)
         {
@@ -38,6 +41,7 @@ namespace ChessCompanion
                 OnPropertyChanged(nameof(State));
             }
         }
+        
 
         public void UpdatePlayerColor()
         {
@@ -57,17 +61,64 @@ namespace ChessCompanion
         }
         public void GetBestMoveWithInfo()
         {
+
             board.ModifyBoard(gameScraper.ExtractChessPieces());
             State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             // Get the best move, PV, and score
-            (string bestMove, int? cp, string pv) result = engine.GetBestMoveWithInfo(300);
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
 
             // Save the values to variables
-            State.Moves = result.bestMove;
-            State.PV = result.pv;
-            State.CP = result.cp;
+            State.Moves = currentBestMove.bestMove;
+            State.PV = currentBestMove.pv;
+            State.CP = currentBestMove.cp;
+             
+        }
+        public void AnalyzeMove()
+        {
+            lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
+            lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
+            board.ModifyBoard(gameScraper.ExtractChessPieces());
+            currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
+            engine.SetPosition(currentBestMove.FEN);
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+
+            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
+
+            engine.AnalyzeLastMove(lastBestMove, currentBestMove);
+        }
+        public void GetBestMoveWithInfoAndAnalyze()
+        {
+            lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
+            lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
+            board.ModifyBoard(gameScraper.ExtractChessPieces());
+            currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
+            State.FEN = currentBestMove.FEN;
+            engine.SetPosition(State.FEN);
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+
+            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
+
+            engine.AnalyzeLastMove(lastBestMove, currentBestMove);
+
+            State.Moves = currentBestMove.bestMove;
+            State.PV = currentBestMove.pv;
+            if (currentBestMove.mate == null)
+            {
+                State.CP = currentBestMove.cp;
+            }
+            else
+            {
+                State.MATE = currentBestMove.mate;
+            }
             
+        }
+        public void FirstMove()
+        {
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+
+            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
         }
         public void makeMove()
         {
@@ -98,6 +149,8 @@ namespace ChessCompanion
         {
             return gameScraper.isWhite;
         }
+
+        
 
 
         public event PropertyChangedEventHandler PropertyChanged;

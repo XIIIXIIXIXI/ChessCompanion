@@ -35,7 +35,7 @@ namespace ChessCompanion.Core
             }
         }
 
-        private int? _cp = 0;
+        private int? _cp = null;
         public int? CP
         {
             get { return _cp; }
@@ -43,6 +43,17 @@ namespace ChessCompanion.Core
             {
                 _cp = value;
                 OnPropertyChanged(nameof(CP));
+            }
+        }
+
+        private int? _mate = null;
+        public int? MATE
+        {
+            get { return _mate; }
+            set
+            {
+                _mate = value;
+                OnPropertyChanged(nameof(MATE));
             }
         }
         private string _pv = "";

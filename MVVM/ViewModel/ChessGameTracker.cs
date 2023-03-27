@@ -24,6 +24,7 @@ namespace ChessCompanion.MVVM.ViewModel
                 if (viewModel.PlayingAsWhite())
                 {
                     viewModel.State.Moves = "e2e4";
+                    viewModel.FirstMove();
                     viewModel.makeMove();
                 }
 
@@ -33,9 +34,10 @@ namespace ChessCompanion.MVVM.ViewModel
 
                     //viewModel.GetBestMove();
                     viewModel.GetBestMoveWithInfo();
-                    viewModel.makeMove();
+                    //viewModel.makeMove();
                     
                     viewModel.WaitForPlayerToMove();
+                    viewModel.AnalyzeMove();
                     Debug.WriteLine("------------");
                 }
             }
