@@ -13,6 +13,6 @@ namespace ChessCompanion.MVVM.Utility
         void SetPosition(string fen, params string[] moves);
         string GetBestMove(int milliseconds);
 
-        public string AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove);
+        public MoveScore AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove);
     }
 }
