@@ -7,6 +7,7 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 
 
@@ -154,7 +155,17 @@ public class Scraper
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript(jsCode);
     }
-
+    public void removeAnalyzeIcon()
+    {
+        try
+        {
+            string jsCode = "document.querySelector('[class*=\"effect\"]').remove();";
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript(jsCode);
+        }
+        catch { }
+        
+    }
 
 
 

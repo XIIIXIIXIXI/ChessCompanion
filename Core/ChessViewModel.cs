@@ -86,6 +86,7 @@ namespace ChessCompanion
         }
         public void AnalyzeMove()
         {
+            scraper.removeAnalyzeIcon();
             lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
             lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
             board.ModifyBoard(gameScraper.ExtractChessPieces());
@@ -96,9 +97,13 @@ namespace ChessCompanion
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
 
             MoveScore score = engine.AnalyzeLastMove(lastBestMove, currentBestMove);
-            
-            
-            
+
+            string move = gameScraper.GetLatestMoveForWhite();
+            string square = board.TranslateMoveToSquare(move);
+            scraper.ShowAnalyzedIcon(square, MoveScoreColors.IconData[score]);
+
+
+
         }
         public void FirstMove()
         {

@@ -173,9 +173,28 @@ namespace ChessCompanion.MVVM.Model
         }
         public string TranslateMoveToSquare(string move)
         {
-            string sourceSquare = move.Substring(move.Length-2);
-            sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
-            return sourceSquare;
+            
+            try
+            {
+                string sourceSquare = move.Substring(move.Length - 2);
+                sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
+                return sourceSquare;
+            }
+            catch
+            {
+                if (move.EndsWith('+'))
+                {
+                    move.Remove(move.Length);
+                }
+                else if(move.Contains('='))
+                {
+                    move.Substring(2, move.Length);
+                }
+                string sourceSquare = move.Substring(move.Length - 2);
+                sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
+                return sourceSquare;
+            }
+            
         }
     }
     
