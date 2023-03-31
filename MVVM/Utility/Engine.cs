@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media.Media3D;
@@ -127,61 +128,68 @@ namespace ChessCompanion.MVVM.Utility
             string command = $"setoption name {name} value {value}";
             SendCommand(command);
         }
-        public string AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove)
+
+        public MoveScore AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove)
         {
-            string lastMoveScore;
             if (lastBestMove.FEN == currentMove.FEN)
             {
-                lastMoveScore = "BestMove";
+                return MoveScore.BestMove;
             }
-            else
+            else if (lastBestMove.mate != null)
             {
-                if (lastBestMove.mate != null)
+                if (currentMove.mate == null)
                 {
-                    // if last move is losing mate, this move just escapes a mate
-                    // if last move is winning mate, this move is a missed win
-                    if (currentMove.mate == null)
-                    {
-                        lastMoveScore = lastBestMove.mate > 0 ? "MissedWin" : "Brilliant";
-                    }
-                    else
-                    {
-                        //both are mate
-                        lastMoveScore = lastBestMove.mate > 0 ? "Excellent" : "ResignWhite";
-                    }
-                }
-                else if (currentMove.mate != null)
-                {
-                    // brilliant if it found a mate, blunder if it moved into a mate
-                    lastMoveScore = currentMove.mate < 0 ? "Brilliant" : "Blunder";
-                }
-                else if (currentMove.cp != null && lastBestMove.cp != null) 
-                {
-                    int? evalDiff = -(currentMove.cp + lastBestMove.cp);
-                    if (evalDiff > 100)
-                        lastMoveScore = "Brilliant";
-                    else if (evalDiff > 0)
-                        lastMoveScore = "GreatFind";
-                    else if (evalDiff > -10)
-                        lastMoveScore = "BestMove";
-                    else if (evalDiff > -25)
-                        lastMoveScore = "Excellent";
-                    else if (evalDiff > -50)
-                        lastMoveScore = "Good";
-                    else if (evalDiff > -100)
-                        lastMoveScore = "Inaccuracy";
-                    else if (evalDiff > -250)
-                        lastMoveScore = "Mistake";
-                    else
-                        lastMoveScore = "Blunder";
+                    return lastBestMove.mate > 0 ? MoveScore.MissedWin : MoveScore.Brilliant;
                 }
                 else
                 {
-                    throw new ArgumentException("Analyzing last move error");
+                    return lastBestMove.mate > 0 ? MoveScore.Excellent : MoveScore.ResignWhite;
                 }
             }
-            Debug.WriteLine("Value: " + lastMoveScore);
-            return lastMoveScore;
+            else if (currentMove.mate != null)
+            {
+                return currentMove.mate < 0 ? MoveScore.Brilliant : MoveScore.Blunder;
+            }
+            else if (currentMove.cp != null && lastBestMove.cp != null)
+            {
+                int? evalDiff = -(currentMove.cp + lastBestMove.cp);
+                if (evalDiff > 100)
+                {
+                    return MoveScore.Brilliant;
+                }
+                else if (evalDiff > 0)
+                {
+                    return MoveScore.GreatFind;
+                }
+                else if (evalDiff > -10)
+                {
+                    return MoveScore.BestMove;
+                }
+                else if (evalDiff > -25)
+                {
+                    return MoveScore.Excellent;
+                }
+                else if (evalDiff > -50)
+                {
+                    return MoveScore.Good;
+                }
+                else if (evalDiff > -100)
+                {
+                    return MoveScore.Inaccuracy;
+                }
+                else if (evalDiff > -250)
+                {
+                    return MoveScore.Mistake;
+                }
+                else
+                {
+                    return MoveScore.Blunder;
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Analyzing last move error");
+            }
         }
 
 

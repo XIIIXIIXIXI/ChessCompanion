@@ -4,8 +4,10 @@ using ChessCompanion.MVVM.Utility;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace ChessCompanion
@@ -93,7 +95,10 @@ namespace ChessCompanion
 
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
 
-            engine.AnalyzeLastMove(lastBestMove, currentBestMove);
+            MoveScore score = engine.AnalyzeLastMove(lastBestMove, currentBestMove);
+            
+            
+            
         }
         public void FirstMove()
         {
