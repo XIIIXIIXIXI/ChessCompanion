@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ChessCompanion.MVVM.Utility;
+using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -169,6 +170,12 @@ namespace ChessCompanion.MVVM.Model
 
 
             return fen;
+        }
+        public string TranslateMoveToSquare(string move)
+        {
+            string sourceSquare = move.Substring(move.Length-2);
+            sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
+            return sourceSquare;
         }
     }
     

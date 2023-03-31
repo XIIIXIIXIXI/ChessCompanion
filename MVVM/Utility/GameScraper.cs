@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ChessCompanion.MVVM.Utility
 {
@@ -177,6 +178,33 @@ namespace ChessCompanion.MVVM.Utility
             this.squareWidth = piece.Size.Width;
             this.gameboard = gameBoard;
         }
+        public string GetLatestMove()
+        {
+            // find all the move elements
+            IReadOnlyCollection<IWebElement> moveElements = driver.FindElements(By.CssSelector(".move"));
+
+            // iterate through the move elements in reverse order to find the latest move
+            for (int i = moveElements.Count - 1; i >= 0; i--)
+            {
+                // get the white and black move elements for the current move
+                IWebElement whiteMoveElement = moveElements.ElementAt(i).FindElement(By.CssSelector(".white"));
+                IWebElement blackMoveElement = moveElements.ElementAt(i).FindElement(By.CssSelector(".black"));
+                
+                // check if the player color matches the color of the last move made
+                if (isWhite && whiteMoveElement != null)
+                {
+                    return whiteMoveElement.Text;
+                }
+                else if (!isWhite && blackMoveElement != null)
+                {
+                    return blackMoveElement.Text;
+                }
+            }
+
+            // no move was found
+            return null;
+        }
+       
         public bool IsResignElementPresent()
         {
             //, span.icon-font-chess.flag.resign-button-icon

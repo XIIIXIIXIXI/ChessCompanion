@@ -72,8 +72,15 @@ namespace ChessCompanion
             // Save the values to variables
             State.Moves = currentBestMove.bestMove;
             State.PV = currentBestMove.pv;
-            State.CP = currentBestMove.cp;
-             
+            if (currentBestMove.mate == null)
+            {
+                State.CP = currentBestMove.cp;
+            }
+            else
+            {
+                State.MATE = currentBestMove.mate;
+            }
+
         }
         public void AnalyzeMove()
         {
@@ -87,32 +94,6 @@ namespace ChessCompanion
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
 
             engine.AnalyzeLastMove(lastBestMove, currentBestMove);
-        }
-        public void GetBestMoveWithInfoAndAnalyze()
-        {
-            lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
-            lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
-            board.ModifyBoard(gameScraper.ExtractChessPieces());
-            currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
-            State.FEN = currentBestMove.FEN;
-            engine.SetPosition(State.FEN);
-            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
-
-            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
-
-            engine.AnalyzeLastMove(lastBestMove, currentBestMove);
-
-            State.Moves = currentBestMove.bestMove;
-            State.PV = currentBestMove.pv;
-            if (currentBestMove.mate == null)
-            {
-                State.CP = currentBestMove.cp;
-            }
-            else
-            {
-                State.MATE = currentBestMove.mate;
-            }
-            
         }
         public void FirstMove()
         {
