@@ -173,7 +173,7 @@ namespace ChessCompanion.MVVM.Utility
                 {
                     return MoveScore.Good;
                 }
-                else if (evalDiff > -100)
+                else if (evalDiff > -120)
                 {
                     return MoveScore.Inaccuracy;
                 }

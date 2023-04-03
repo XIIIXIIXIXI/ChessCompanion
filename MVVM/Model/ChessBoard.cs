@@ -171,7 +171,7 @@ namespace ChessCompanion.MVVM.Model
 
             return fen;
         }
-        public string TranslateMoveToSquare(string move)
+        public string TranslateMoveToSquare(string move, bool isWhite)
         {
             
             try
@@ -182,13 +182,39 @@ namespace ChessCompanion.MVVM.Model
             }
             catch
             {
+                // check
                 if (move.EndsWith('+'))
                 {
-                    move.Remove(move.Length);
+                    move = move.Remove(move.Length-1);
                 }
-                else if(move.Contains('='))
+                // capture
+                else if (move.Contains('='))
                 {
-                    move.Substring(2, move.Length);
+                    move = move.Substring(2, move.Length);
+                }
+                //castling short
+                else if (move.Equals("O-O"))
+                {
+                    if (isWhite)
+                    {
+                        move = "g1";
+                    }
+                    else
+                    {
+                        move = "g8";
+                    }
+
+                }
+                else if (move.Equals("O-O-O"))
+                {
+                    if (isWhite)
+                    {
+                        move = "c1";
+                    }
+                    else
+                    {
+                        move = "c8";
+                    }
                 }
                 string sourceSquare = move.Substring(move.Length - 2);
                 sourceSquare = new string(new char[] { ChessConstants.FileLookup[sourceSquare[0]], sourceSquare[1] });
