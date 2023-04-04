@@ -37,24 +37,5 @@ namespace ChessCompanion.MVVM.Utility
             this.promotion = promotion;
             this.pv = pv;
         }
-
-        /*public TopMove(string move, int? cp, int? mate, bool promotion, string pv)
-        {
-            this.move = move;
-            this.cp = cp;
-            this.promotion = promotion;
-            this.mate = mate;
-            this.pv = pv;
-        }*/
-        /*
-        public void UpdateTopMove(string[] line, string move, bool promotion, int? cp, int? mate)
-        {
-            this.move = move;
-            this.line = line;
-            this.promotion = promotion;
-            this.cp = cp;
-            this.mate = mate;
-        }
-        */
     }
 }

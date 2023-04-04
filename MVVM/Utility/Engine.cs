@@ -192,7 +192,6 @@ namespace ChessCompanion.MVVM.Utility
             }
         }
 
-
         public void Dispose()
         {
             if (!_process.HasExited)
@@ -204,3 +203,4 @@ namespace ChessCompanion.MVVM.Utility
         }
     }
 }
+

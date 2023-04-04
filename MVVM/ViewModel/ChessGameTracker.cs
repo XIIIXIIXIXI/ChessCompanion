@@ -12,32 +12,32 @@ namespace ChessCompanion.MVVM.ViewModel
 {
     class ChessGameTracker
     {
+        private readonly GameMediator mediator;
 
-       
-        public static void TestFindGame(ChessViewModel viewModel)
+        public ChessGameTracker(GameMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+        public void TestFindGame()
         {
           while(true)
             {
                 //wait for game to start
-                viewModel.WaitForResignElement(1000);
-                viewModel.InitGameScraper();
-                if (viewModel.PlayingAsWhite())
+                mediator.WaitForResignElement(1000);
+                mediator.InitGameScraper();
+                if (mediator.PlayingAsWhite())
                 {
-                    viewModel.State.Moves = "e2e4";
-                    viewModel.FirstMove();
-                    viewModel.makeMove();
+                    mediator.State.Moves = "e2e4";
+                    mediator.FirstMove();
+                    mediator.makeMove();
                 }
 
-                while (viewModel.IsResignElementPresent())
+                while (mediator.IsResignElementPresent())
                 {
-                    viewModel.WaitForOpponentToMove();
-
-                    //viewModel.GetBestMove();
-                    viewModel.GetBestMoveWithInfo();
-                    //viewModel.makeMove();
-                    
-                    viewModel.WaitForPlayerToMove();
-                    viewModel.AnalyzeMove();
+                    mediator.WaitForOpponentToMove();
+                    mediator.GetBestMoveWithInfo();
+                    mediator.WaitForPlayerToMove();
+                    mediator.AnalyzeMove();
                     Debug.WriteLine("------------");
                 }
             }

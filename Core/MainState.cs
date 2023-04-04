@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ChessCompanion.Core
 {
-    /* This function as a dataclass in Kotlin, using jetpack compose. It is set up like this
+    /* This function acts as a dataclass in Kotlin, using jetpack compose. It is set up like this
      * so the UI updates automatically whenever the state value changes. 
-     * 
      */
     public class MainState : INotifyPropertyChanged
     {
@@ -79,7 +78,6 @@ namespace ChessCompanion.Core
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

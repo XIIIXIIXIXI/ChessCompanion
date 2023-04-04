@@ -24,7 +24,8 @@ namespace ChessCompanion
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ChessViewModel viewModel;
+        private readonly GameMediator viewModel;
+        private readonly ChessGameTracker gameTracker;
         
         public MainWindow()
         {
@@ -36,10 +37,12 @@ namespace ChessCompanion
             IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
             
 
-            viewModel = new ChessViewModel(driver, scraper, board, engine, gameScraper);
+            viewModel = new GameMediator(driver, scraper, board, engine, gameScraper);
             DataContext = viewModel;
 
-            Task.Run(() => ChessGameTracker.TestFindGame(viewModel));
+            gameTracker = new ChessGameTracker(viewModel);
+
+            Task.Run(() => gameTracker.TestFindGame());
         }
     }
 }

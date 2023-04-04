@@ -16,8 +16,6 @@ public class Scraper
 {
     public IWebDriver driver; 
     
-
-
     public Scraper(IWebDriver driver)
     {
         this.driver = driver;
@@ -58,8 +56,6 @@ public class Scraper
         driver.Navigate().GoToUrl("https://www.chess.com/play/computer");
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(100000));
         wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("https://www.chess.com/play/computer"));
-
-
     }
 
     public void FindGame()
@@ -78,14 +74,13 @@ public class Scraper
         wait.Until(ExpectedConditions.UrlContains("https://www.chess.com/game/live/"));
 
     }
-    
-
+    //when element is present game has started
     public void WaitForResignElement(int seconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
         wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.CssSelector("span.small-controls-icon.icon-font-chess.flag, span.icon-font-chess.flag.resign-button-icon")));
     }
-
+    //draw icon on square that indicates how good a move was
     public void ShowAnalyzedIcon (string lastBestMove, IconData lastMoveScore)
     {
         string jsCode = @"

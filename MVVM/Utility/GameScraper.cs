@@ -134,6 +134,7 @@ namespace ChessCompanion.MVVM.Utility
             }
         }
 
+        //Make move for player by getting sending a click action to the website
         public void MakeMove(string move)
         {
             // Get the square width and offsets
@@ -168,7 +169,7 @@ namespace ChessCompanion.MVVM.Utility
                    .Perform();
 
         }
-
+        // Find the position of the board and square widths
         public void CaptureBoardPosition()
         {
             IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
@@ -178,6 +179,7 @@ namespace ChessCompanion.MVVM.Utility
             this.squareWidth = piece.Size.Width;
             this.gameboard = gameBoard;
         }
+        
         public string GetLatestMoveForWhite()
         {
             // find all the move elements
@@ -204,7 +206,7 @@ namespace ChessCompanion.MVVM.Utility
             // no move was found
             return null;
         }
-       
+       //if resign element is not present the game is over
         public bool IsResignElementPresent()
         {
             //, span.icon-font-chess.flag.resign-button-icon

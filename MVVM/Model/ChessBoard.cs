@@ -94,8 +94,6 @@ namespace ChessCompanion.MVVM.Model
             watch.Stop();
             Debug.WriteLine($"ModifyBoard: {watch.ElapsedMilliseconds} ms");
         }
-
-        
         public string GetFENString(char toMove)
         {
             var watch = Stopwatch.StartNew();
@@ -223,5 +221,5 @@ namespace ChessCompanion.MVVM.Model
             
         }
     }
-    
+
 }
