@@ -38,46 +38,34 @@ namespace ChessCompanion.MVVM.ViewModel
             gameScraper.FindPlayerColor();
             State.IsWhite = gameScraper.isWhite;
         }
+
         public void GetBestMove()
         {
+            UpdateBoardState();
 
-            board.ModifyBoard(gameScraper.ExtractChessPieces());
-            State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
             engine.SetPosition(State.FEN);
             State.Moves = engine.GetBestMove(300);
         }
+
         public void GetBestMoveWithInfo()
         {
-            board.ModifyBoard(gameScraper.ExtractChessPieces());
-            State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
-            engine.SetPosition(State.FEN);
-            // Get the best move, PV, and score
-            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
-            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
+            UpdateBoardState();
 
-            // Save the values to variables
-            State.Moves = currentBestMove.bestMove;
-            State.PV = currentBestMove.pv;
-            if (currentBestMove.mate == null)
-            {
-                State.CP = currentBestMove.cp;
-            }
-            else
-            {
-                State.MATE = currentBestMove.mate;
-            }
+            engine.SetPosition(State.FEN);
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+            UpdateCurrentBestMove(bestMove, cp, mate, promotion, pv);
+            UpdateStateWithCurrentBestMove();
         }
+
         public void AnalyzeMove()
         {
             scraper.removeAnalyzeIcon();
-            lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
-            lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
-            board.ModifyBoard(gameScraper.ExtractChessPieces());
-            currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
-            engine.SetPosition(currentBestMove.FEN);
-            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+            UpdateLastBestMove();
+            UpdateBoardState();
 
-            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
+            engine.SetPosition(State.FEN);
+            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
+            UpdateCurrentBestMove(bestMove, cp, mate, promotion, pv);
 
             MoveScore score = engine.AnalyzeLastMove(lastBestMove, currentBestMove);
 
@@ -85,12 +73,51 @@ namespace ChessCompanion.MVVM.ViewModel
             string square = board.TranslateMoveToSquare(move, gameScraper.isWhite);
             scraper.ShowAnalyzedIcon(square, MoveScoreColors.IconData[score]);
         }
+
+        private void UpdateBoardState()
+        {
+            board.ModifyBoard(gameScraper.ExtractChessPieces());
+            State.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
+        }
+
+        private void UpdateCurrentBestMove(string bestMove, int? cp, int? mate, bool promotion, string pv)
+        {
+            currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
+            currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
+        }
+
+        private void UpdateStateWithCurrentBestMove()
+        {
+            State.Moves = currentBestMove.bestMove;
+            State.PV = currentBestMove.pv;
+            if (currentBestMove.mate == null)
+            {
+                State.MATE = null;
+                State.CP = currentBestMove.cp;
+            }
+            else
+            {
+                State.CP = null;
+                State.MATE = currentBestMove.mate;
+            }
+        }
+
+        private void UpdateLastBestMove()
+        {
+            lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);
+            lastBestMove.FEN = board.GetFENFromMove(lastBestMove.bestMove, gameScraper.BlackOrWhiteToMove());
+        }
         public void FirstMove()
         {
             (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
 
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
         }
+
+
+
+
+        //Utility code for game loop
         public void makeMove()
         {
             gameScraper.MakeMove(State.Moves);
