@@ -89,22 +89,47 @@ evaluationBarParent.appendChild(evaluationBar);";
         {
             string? scoreText;
             double percentage;
-            if (mate == null)
+            string scoreAbbreviatedClassName;
+            if (isWhite)
             {
-                double score = (double)cp / 1000;
-                scoreText = score.ToString();
-                double a = 0.239; // decay constant
-                percentage = 100 / (1 + Math.Exp(-a * score));
+                if (mate == null)
+                {
+                    double score = (double)cp / 1000;
+                    scoreText = score.ToString();
+                    double a = 0.239; // decay constant
+                    percentage = 100 / (1 + Math.Exp(a * score));
 
-                // Hardcap at 95% and 5%
-                percentage = Math.Min(percentage, 95);
-                percentage = Math.Max(percentage, 5);
+                    // Hardcap at 95% and 5%
+                    percentage = Math.Min(percentage, 95);
+                    percentage = Math.Max(percentage, 5);
+
+                    // Determine the class name of the score abbreviated element based on the sign of the score
+                    scoreAbbreviatedClassName = score >= 0 ? "evaluation-bar-scoreAbbreviated evaluation-bar-dark" : "evaluation-bar-scoreAbbreviated evaluation-bar-light";
+                }
+                else
+                {
+                    scoreText = "#" + mate.ToString();
+                    if (mate > 0)
+                    {
+                        percentage = 100;
+                        scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-dark";
+                    }
+                    else
+                    {
+                        percentage = 0;
+                        scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-light";
+                    }
+                    
+                }
             }
             else
             {
-                scoreText ="#" + mate.ToString();
-                percentage = 100;
+                //percentage = 100 / (1 + Math.Exp(a * score));
+                scoreText = "#";
+                percentage = 0;
+                scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-dark";
             }
+            
         
             // Find the evaluation bar element
             IWebElement evaluationBar = driver.FindElement(By.Id("board-layout-evaluation"));
@@ -118,6 +143,7 @@ evaluationBarParent.appendChild(evaluationBar);";
             // Change the text content of score abbreviated
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript("arguments[0].textContent = arguments[1];", scoreAbbreviated, scoreText);
+            jsExecutor.ExecuteScript($"arguments[0].setAttribute('class', '{scoreAbbreviatedClassName}');", scoreAbbreviated);
 
             // Change the percentage of color white
             jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'transform: translate3d(0px, {percentage.ToString("0.00", CultureInfo.InvariantCulture)}%, 0px);')", colorWhite);
