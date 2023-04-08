@@ -193,10 +193,44 @@ namespace ChessCompanion.MVVM.Utility
             }
             else
             {
-                //percentage = 100 / (1 + Math.Exp(a * score));
-                scoreText = "#";
-                percentage = 0;
-                scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-dark";
+                if (mate == null)
+                {
+                    if (colorToMove == 'w')
+                    {
+                        cp = -cp;
+                    }
+                    double score = (double)cp / 100;
+                    scoreText = score.ToString("0.0", CultureInfo.InvariantCulture);
+                    double a = 0.239; // decay constant
+                    percentage = 100 / (1 + Math.Exp(-a * score));
+
+                    // Hardcap at 95% and 5%
+                    percentage = Math.Min(percentage, 95);
+                    percentage = Math.Max(percentage, 5);
+
+                    // Determine the class name of the score abbreviated element based on the sign of the score
+                    scoreAbbreviatedClassName = score >= 0 ? "evaluation-bar-scoreAbbreviated evaluation-bar-dark" : "evaluation-bar-scoreAbbreviated evaluation-bar-light";
+                }
+                else
+                {
+                    if (colorToMove == 'w')
+                    {
+                        mate = -mate;
+                    }
+                    scoreText = "#" + mate.ToString();
+                    if (mate > 0)
+                    {
+                        percentage = 100;
+                        scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-light";
+                        
+                    }
+                    else
+                    {
+                        percentage = 0;
+                        scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-dark";
+                    }
+
+                }
             }
             
         

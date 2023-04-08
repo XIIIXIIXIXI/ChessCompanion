@@ -196,17 +196,17 @@ namespace ChessCompanion.MVVM.Utility
             {
                 // get the white and black move elements for the current move
                 IWebElement whiteMoveElement = moveElements.ElementAt(i).FindElement(By.CssSelector(".white"));
-                //IWebElement blackMoveElement = moveElements.ElementAt(i).FindElement(By.CssSelector(".black"));
+                IWebElement blackMoveElement = moveElements.ElementAt(i).FindElement(By.CssSelector(".black"));
                 
                 // check if the player color matches the color of the last move made
                 if (isWhite && whiteMoveElement != null)
                 {
                     return whiteMoveElement.Text;
                 }
-                /*else if (!isWhite && blackMoveElement != null)
+                else if (!isWhite && blackMoveElement != null)
                 {
                     return blackMoveElement.Text;
-                }*/
+                }
             }
 
             // no move was found

@@ -27,9 +27,7 @@ namespace ChessCompanion.MVVM.ViewModel
                 mediator.InitGameScraper();
                 if (mediator.PlayingAsWhite())
                 {
-                    mediator.State.Moves = "e2e4";
-                    mediator.FirstMove();
-                    mediator.makeMove(); 
+                    mediator.WaitForFirstMove(); 
                 }
                 else
                 {
@@ -43,13 +41,36 @@ namespace ChessCompanion.MVVM.ViewModel
                     mediator.GetBestMoveWithInfo();
                     mediator.UpdateEvaluationBar();
                     mediator.WaitForPlayerToMove();
-                    mediator.AnalyzeMove();
+                    try
+                    {
+                        mediator.AnalyzeMove();
+                    }
+                    catch 
+                    {
+                        break; // exit loop if resign element is no longer present
+                    }
                     mediator.UpdateEvaluationBar();
                     Debug.WriteLine("------------");
                 }
+
             }
             
         }
     }
 
 }
+
+//When everything is stable at some point make the gameloop like this:
+//current implemention is only for debugging reasons.
+/*
+try
+{
+    while (mediator.IsResignElementPresent())
+    {
+        // loop body
+    }
+}
+catch (ResignElementException)
+{
+    // resign element is no longer present, exit loop
+}*/
