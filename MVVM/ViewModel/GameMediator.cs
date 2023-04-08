@@ -21,14 +21,17 @@ namespace ChessCompanion.MVVM.ViewModel
         private readonly MainState state = new MainState();
         private readonly TopMove currentBestMove = new TopMove();
         private readonly TopMove lastBestMove = new TopMove();
+        private readonly EvaluationBar evaluationBar;
 
-        public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper)
+        public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper, EvaluationBar evaluationBar)
         {
             this.driver = driver;
             this.scraper = scraper;
             this.board = board;
             this.engine = engine;
             this.gameScraper = gameScraper;
+            this.evaluationBar = evaluationBar;
+
         }
 
         public MainState State => state;
@@ -72,6 +75,16 @@ namespace ChessCompanion.MVVM.ViewModel
             string move = gameScraper.GetLatestMoveForWhite();
             string square = board.TranslateMoveToSquare(move, gameScraper.isWhite);
             scraper.ShowAnalyzedIcon(square, MoveScoreColors.IconData[score]);
+        }
+
+        public void EvaluationBarOn()
+        {
+            evaluationBar.CreateBar(gameScraper.isWhite);
+        }
+
+        public void UpdateEvaluationBar()
+        {
+            evaluationBar.UpdateBar(gameScraper.isWhite, currentBestMove.cp, currentBestMove.mate, gameScraper.BlackOrWhiteToMove());
         }
 
         private void UpdateBoardState()
@@ -121,6 +134,10 @@ namespace ChessCompanion.MVVM.ViewModel
         public void makeMove()
         {
             gameScraper.MakeMove(State.Moves);
+        }
+        public void WaitForFirstMove()
+        {
+            gameScraper.WaitForFirstMove();
         }
         public void WaitForOpponentToMove()
         {

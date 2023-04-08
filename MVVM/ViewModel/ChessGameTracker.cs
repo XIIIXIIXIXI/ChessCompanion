@@ -29,15 +29,22 @@ namespace ChessCompanion.MVVM.ViewModel
                 {
                     mediator.State.Moves = "e2e4";
                     mediator.FirstMove();
-                    mediator.makeMove();
+                    mediator.makeMove(); 
                 }
-
+                else
+                {
+                    mediator.WaitForFirstMove();
+                }
+                
+                mediator.EvaluationBarOn();
                 while (mediator.IsResignElementPresent())
                 {
                     mediator.WaitForOpponentToMove();
                     mediator.GetBestMoveWithInfo();
+                    mediator.UpdateEvaluationBar();
                     mediator.WaitForPlayerToMove();
                     mediator.AnalyzeMove();
+                    mediator.UpdateEvaluationBar();
                     Debug.WriteLine("------------");
                 }
             }

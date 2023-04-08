@@ -21,72 +21,132 @@ namespace ChessCompanion.MVVM.Utility
 
         public void CreateBar(bool isWhite)
         {
+            string jsCode;
             if (isWhite)
             {
-                string jsCode = @"// Remove existing board-layout-evaluation elements
-var existingEvaluationBars = document.querySelectorAll('.board-layout-evaluation');
-existingEvaluationBars.forEach(function(existingEvaluationBar) {
-  existingEvaluationBar.remove();
-});
-var evaluationBar = document.createElement('div');
-evaluationBar.setAttribute('id', 'board-layout-evaluation');
-evaluationBar.setAttribute('class', 'board-layout-evaluation');
-evaluationBar.setAttribute('bis_skin_checked', '1');
+                 jsCode = @"// Remove existing board-layout-evaluation elements
+                var existingEvaluationBars = document.querySelectorAll('.board-layout-evaluation');
+                existingEvaluationBars.forEach(function(existingEvaluationBar) {
+                  existingEvaluationBar.remove();
+                });
+                var evaluationBar = document.createElement('div');
+                evaluationBar.setAttribute('id', 'board-layout-evaluation');
+                evaluationBar.setAttribute('class', 'board-layout-evaluation');
+                evaluationBar.setAttribute('bis_skin_checked', '1');
 
-var evaluationBarBar = document.createElement('div');
-evaluationBarBar.setAttribute('class', 'evaluation-bar-bar undefined');
-evaluationBarBar.setAttribute('bis_skin_checked', '1');
+                var evaluationBarBar = document.createElement('div');
+                evaluationBarBar.setAttribute('class', 'evaluation-bar-bar undefined');
+                evaluationBarBar.setAttribute('bis_skin_checked', '1');
 
-var scoreAbbreviated = document.createElement('span');
-scoreAbbreviated.setAttribute('class', 'evaluation-bar-scoreAbbreviated evaluation-bar-dark');
-scoreAbbreviated.textContent = '1.6';
+                var scoreAbbreviated = document.createElement('span');
+                scoreAbbreviated.setAttribute('class', 'evaluation-bar-scoreAbbreviated evaluation-bar-dark');
+                scoreAbbreviated.textContent = '1.6';
 
-var score = document.createElement('span');
-score.setAttribute('class', 'evaluation-bar-score evaluation-bar-dark');
-score.textContent = '+1.67';
+                var score = document.createElement('span');
+                score.setAttribute('class', 'evaluation-bar-score evaluation-bar-dark');
+                score.textContent = '+1.67';
 
-var evaluationBarFill = document.createElement('div');
-evaluationBarFill.setAttribute('class', 'evaluation-bar-fill');
-evaluationBarFill.setAttribute('bis_skin_checked', '1');
+                var evaluationBarFill = document.createElement('div');
+                evaluationBarFill.setAttribute('class', 'evaluation-bar-fill');
+                evaluationBarFill.setAttribute('bis_skin_checked', '1');
 
-var colorBlack = document.createElement('div');
-colorBlack.setAttribute('class', 'evaluation-bar-color evaluation-bar-black');
-colorBlack.setAttribute('bis_skin_checked', '1');
+                var colorBlack = document.createElement('div');
+                colorBlack.setAttribute('class', 'evaluation-bar-color evaluation-bar-black');
+                colorBlack.setAttribute('bis_skin_checked', '1');
 
-var colorDraw = document.createElement('div');
-colorDraw.setAttribute('class', 'evaluation-bar-color evaluation-bar-draw');
-colorDraw.setAttribute('bis_skin_checked', '1');
+                var colorDraw = document.createElement('div');
+                colorDraw.setAttribute('class', 'evaluation-bar-color evaluation-bar-draw');
+                colorDraw.setAttribute('bis_skin_checked', '1');
 
-var colorWhite = document.createElement('div');
-colorWhite.setAttribute('class', 'evaluation-bar-color evaluation-bar-white');
-colorWhite.setAttribute('style', 'transform: translate3d(0px, 34.97%, 0px);');
-colorWhite.setAttribute('bis_skin_checked', '1');
+                var colorWhite = document.createElement('div');
+                colorWhite.setAttribute('class', 'evaluation-bar-color evaluation-bar-white');
+                colorWhite.setAttribute('style', 'transform: translate3d(0px, 34.97%, 0px);');
+                colorWhite.setAttribute('bis_skin_checked', '1');
 
-var critical = document.createElement('span');
-critical.setAttribute('class', 'evaluation-bar-critical');
-critical.setAttribute('style', 'display: none;');
+                var critical = document.createElement('span');
+                critical.setAttribute('class', 'evaluation-bar-critical');
+                critical.setAttribute('style', 'display: none;');
 
-colorWhite.appendChild(critical);
-evaluationBarFill.appendChild(colorBlack);
-evaluationBarFill.appendChild(colorDraw);
-evaluationBarFill.appendChild(colorWhite);
+                colorWhite.appendChild(critical);
+                evaluationBarFill.appendChild(colorBlack);
+                evaluationBarFill.appendChild(colorDraw);
+                evaluationBarFill.appendChild(colorWhite);
 
-evaluationBarBar.appendChild(scoreAbbreviated);
-evaluationBarBar.appendChild(score);
-evaluationBarBar.appendChild(evaluationBarFill);
+                evaluationBarBar.appendChild(scoreAbbreviated);
+                evaluationBarBar.appendChild(score);
+                evaluationBarBar.appendChild(evaluationBarFill);
 
-evaluationBar.appendChild(evaluationBarBar);
+                evaluationBar.appendChild(evaluationBarBar);
 
-var evaluationBarParent = document.querySelector('.board-layout-chessboard');
-evaluationBarParent.appendChild(evaluationBar);";
-
-                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
-                jsExecutor.ExecuteScript(jsCode);
+                var evaluationBarParent = document.querySelector('.board-layout-chessboard');
+                evaluationBarParent.appendChild(evaluationBar);";
             }
+            else
+            {
+                 jsCode = @"// Remove existing board-layout-evaluation elements
+                var existingEvaluationBars = document.querySelectorAll('.board-layout-evaluation');
+                existingEvaluationBars.forEach(function(existingEvaluationBar) {
+                  existingEvaluationBar.remove();
+                });
+                var evaluationBar = document.createElement('div');
+                evaluationBar.setAttribute('id', 'board-layout-evaluation');
+                evaluationBar.setAttribute('class', 'board-layout-evaluation');
+                evaluationBar.setAttribute('bis_skin_checked', '1');
+
+                var evaluationBarBar = document.createElement('div');
+                evaluationBarBar.setAttribute('class', 'evaluation-bar-bar undefined evaluation-bar-flipped');
+                evaluationBarBar.setAttribute('bis_skin_checked', '1');
+
+                var scoreAbbreviated = document.createElement('span');
+                scoreAbbreviated.setAttribute('class', 'evaluation-bar-scoreAbbreviated evaluation-bar-dark');
+                scoreAbbreviated.textContent = '1.6';
+
+                var score = document.createElement('span');
+                score.setAttribute('class', 'evaluation-bar-score evaluation-bar-dark');
+                score.textContent = '+1.67';
+
+                var evaluationBarFill = document.createElement('div');
+                evaluationBarFill.setAttribute('class', 'evaluation-bar-fill');
+                evaluationBarFill.setAttribute('bis_skin_checked', '1');
+
+                var colorBlack = document.createElement('div');
+                colorBlack.setAttribute('class', 'evaluation-bar-color evaluation-bar-black');
+                colorBlack.setAttribute('bis_skin_checked', '1');
+
+                var colorDraw = document.createElement('div');
+                colorDraw.setAttribute('class', 'evaluation-bar-color evaluation-bar-draw');
+                colorDraw.setAttribute('bis_skin_checked', '1');
+
+                var colorWhite = document.createElement('div');
+                colorWhite.setAttribute('class', 'evaluation-bar-color evaluation-bar-white');
+                colorWhite.setAttribute('style', 'transform: translate3d(0px, 34.97%, 0px);');
+                colorWhite.setAttribute('bis_skin_checked', '1');
+
+                var critical = document.createElement('span');
+                critical.setAttribute('class', 'evaluation-bar-critical');
+                critical.setAttribute('style', 'display: none;');
+
+                colorWhite.appendChild(critical);
+                evaluationBarFill.appendChild(colorBlack);
+                evaluationBarFill.appendChild(colorDraw);
+                evaluationBarFill.appendChild(colorWhite);
+
+                evaluationBarBar.appendChild(scoreAbbreviated);
+                evaluationBarBar.appendChild(score);
+                evaluationBarBar.appendChild(evaluationBarFill);
+
+                evaluationBar.appendChild(evaluationBarBar);
+
+                var evaluationBarParent = document.querySelector('.board-layout-chessboard');
+                evaluationBarParent.appendChild(evaluationBar);";
+            }
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript(jsCode);
         }
 
-        public void UpdateBar(bool isWhite, int? cp, int? mate)
+        public void UpdateBar(bool isWhite, int? cp, int? mate, char colorToMove)
         {
+            
             string? scoreText;
             double percentage;
             string scoreAbbreviatedClassName;
@@ -94,8 +154,12 @@ evaluationBarParent.appendChild(evaluationBar);";
             {
                 if (mate == null)
                 {
-                    double score = (double)cp / 1000;
-                    scoreText = score.ToString();
+                    if (colorToMove == 'b')
+                    {
+                        cp = -cp;
+                    }
+                    double score = (double)cp / 100;
+                    scoreText = score.ToString("0.0", CultureInfo.InvariantCulture);
                     double a = 0.239; // decay constant
                     percentage = 100 / (1 + Math.Exp(a * score));
 
@@ -108,15 +172,20 @@ evaluationBarParent.appendChild(evaluationBar);";
                 }
                 else
                 {
+                    if (colorToMove == 'b')
+                    {
+                        mate = -mate;
+                    }
                     scoreText = "#" + mate.ToString();
                     if (mate > 0)
                     {
-                        percentage = 100;
+                        percentage = 0;
                         scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-dark";
+                        
                     }
                     else
                     {
-                        percentage = 0;
+                        percentage = 100;
                         scoreAbbreviatedClassName = "evaluation-bar-scoreAbbreviated evaluation-bar-light";
                     }
                     

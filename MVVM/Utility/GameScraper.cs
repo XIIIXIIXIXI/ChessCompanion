@@ -38,6 +38,12 @@ namespace ChessCompanion.MVVM.Utility
 
             return chessPieceElements;
         }
+        // wait for the class "move to be present
+        public void WaitForFirstMove()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6000));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div.move")));
+        }
         public char BlackOrWhiteToMove()
         {
             var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
@@ -112,7 +118,7 @@ namespace ChessCompanion.MVVM.Utility
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6000));
             if (isWhite)
             {
-                // Wait up to 60 seconds for the move list to have an odd number of moves
+                // Wait up to 6000 seconds for the move list to have an odd number of moves
 
                 wait.Until(driver => {
                     var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
@@ -134,7 +140,7 @@ namespace ChessCompanion.MVVM.Utility
             }
         }
 
-        //Make move for player by getting sending a click action to the website
+        //Make move for player by sending a click action to the website
         public void MakeMove(string move)
         {
             // Get the square width and offsets
