@@ -126,10 +126,6 @@ namespace ChessCompanion.MVVM.ViewModel
 
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
         }
-
-
-
-
         //Utility code for game loop
         public void makeMove()
         {

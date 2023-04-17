@@ -24,7 +24,7 @@ namespace ChessCompanion
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly GameMediator viewModel;
+        private readonly GameMediator mediator;
         private readonly ChessGameTracker gameTracker;
         
         public MainWindow()
@@ -38,12 +38,15 @@ namespace ChessCompanion
             var evaluationBar = new EvaluationBar(driver);
             
 
-            viewModel = new GameMediator(driver, scraper, board, engine, gameScraper, evaluationBar);
+            mediator = new GameMediator(driver, scraper, board, engine, gameScraper, evaluationBar);
+            ChessViewModel viewModel = new ChessViewModel(mediator);
             DataContext = viewModel;
 
-            gameTracker = new ChessGameTracker(viewModel);
+            gameTracker = new ChessGameTracker(mediator);
 
             Task.Run(() => gameTracker.TestFindGame());
+
+           
         }
     }
 }

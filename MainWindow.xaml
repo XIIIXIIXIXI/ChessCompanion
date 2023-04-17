@@ -4,68 +4,64 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessCompanion"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Height="600" Width="320"
-        WindowStyle="None"
-        Background="Transparent"
-        AllowsTransparency="True"
-        >
-    <Border Background="#272537"
-            CornerRadius="30">
+        Title="MainWindow" Height="400" Width="300">
 
+    
+    
 
+    <StackPanel>
+        
+        <!-- Player Color & Lines-->
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Chess Companion"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="22"
-               Grid.Row="0"/>
+            <!--Player Color-->
+            <StackPanel Grid.Column="0" >
+                <TextBlock Text="Player Color" FontWeight="Bold" Margin="10 3"  />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="White" Grid.Column="0" Margin="10 0 0 0" />
+                    <RadioButton Content="Black" Grid.Column="1"/>
+                </Grid>
+                
+            </StackPanel>
+            <!--AutoMove toggle Button-->
+            <StackPanel Grid.Column="1">
+                <ToggleButton x:Name="automoveButton" Margin="10 20 5 5" Background="{Binding UiState.ButtonBackground}"
+              Command="{Binding ButtonClickCommand}">
+ 
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/HorseJump.png" Width="16" Height="16" Margin="0 0 5 0" />
+                        <TextBlock Text="AUTO MOVE" />
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
 
-            <TextBlock Text="{Binding State.FEN}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="9"
-               Grid.Row="1"/>
-           
-
-            <TextBlock Text="{Binding State.Moves}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="18"
-               Grid.Row="2"/>
-
-            <TextBlock Text="{Binding State.PV}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="18"
-               Grid.Row="3"/>
-            
-            <TextBlock Text="{Binding State.CP}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="18"
-               Grid.Row="4"/>
-            <TextBlock Text="{Binding State.MATE}"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"
-               Foreground="White"
-               FontSize="18"
-               Grid.Row="4"/>
         </Grid>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Button Content="Iflhkslæfh" />
+            <Button Content="fgshsgh" />
+            <Button Content="{Binding UiState.Test}" />
 
-    </Border>
-     
+        </Grid>
+            
+    </StackPanel>
+        
+
+
 </Window>

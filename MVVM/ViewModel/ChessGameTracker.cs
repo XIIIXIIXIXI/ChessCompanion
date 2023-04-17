@@ -41,11 +41,12 @@ namespace ChessCompanion.MVVM.ViewModel
                     mediator.GetBestMoveWithInfo();
                     mediator.UpdateEvaluationBar();
                     mediator.WaitForPlayerToMove();
+                    
                     try
                     {
                         mediator.AnalyzeMove();
                     }
-                    catch 
+                    catch
                     {
                         break; // exit loop if resign element is no longer present
                     }
