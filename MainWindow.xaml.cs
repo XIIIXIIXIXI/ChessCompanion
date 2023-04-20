@@ -39,9 +39,11 @@ namespace ChessCompanion
             
 
             mediator = new GameMediator(driver, scraper, board, engine, gameScraper, evaluationBar);
+            // UI
+            
             ChessViewModel viewModel = new ChessViewModel(mediator);
+            //
             DataContext = viewModel;
-
             gameTracker = new ChessGameTracker(mediator);
 
             Task.Run(() => gameTracker.TestFindGame());

@@ -14,5 +14,11 @@ namespace ChessCompanion.MVVM.Utility
         string GetBestMove(int milliseconds);
 
         public MoveScore AnalyzeLastMove(TopMove lastBestMove, TopMove currentMove);
+
+        public void setLines(int lines);
+
+        public TopMove[] GetMultipleLines(int searchTimeMs);
+
+        public void OrderTopMoves(TopMove[] topMoves);
     }
 }

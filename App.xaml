@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:ChessCompanion"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="CustomFont">
+            /ChessCompanion;component/Resources/ahronbd.ttf#Aharoni
+        </FontFamily>
+        <FontFamily x:Key="CustomFont2">
+            /ChessCompanion;component/Resources/STCAIYUN.TTF#STCaiyun
+        </FontFamily>
     </Application.Resources>
 </Application>

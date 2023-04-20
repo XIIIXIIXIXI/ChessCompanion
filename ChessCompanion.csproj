@@ -8,9 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\ahronbd.ttf" />
+    <None Remove="Resources\HorseJump.png" />
+    <None Remove="Resources\PrincetownITC-Normal.ttf" />
+    <None Remove="Resources\STCAIYUN.TTF" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\HorseJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Fonts\" />
     <Folder Include="MVVM\View\" />
-    <Folder Include="Resources\" />
     <Folder Include="Theme\" />
   </ItemGroup>
 
@@ -21,6 +33,11 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.8.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="112.0.5615.4900" />
     <PackageReference Include="Stockfish.NET" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\ahronbd.ttf" />
+    <Resource Include="Resources\STCAIYUN.TTF" />
   </ItemGroup>
 
 </Project>

@@ -86,6 +86,10 @@ namespace ChessCompanion.MVVM.ViewModel
         {
             evaluationBar.UpdateBar(gameScraper.isWhite, currentBestMove.cp, currentBestMove.mate, gameScraper.BlackOrWhiteToMove());
         }
+        public void SetEngineOption(string name, object value)
+        {
+            engine.SetOption(name, value);
+        }
 
         private void UpdateBoardState()
         {
@@ -115,6 +119,7 @@ namespace ChessCompanion.MVVM.ViewModel
             }
         }
 
+        
         private void UpdateLastBestMove()
         {
             lastBestMove.setTopMove(currentBestMove.bestMove, currentBestMove.cp, currentBestMove.mate, currentBestMove.promotion, currentBestMove.pv);

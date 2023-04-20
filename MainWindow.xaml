@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="300">
 
-    
-    
 
-    <StackPanel>
+
+
+    <StackPanel >
         
         <!-- Player Color & Lines-->
         <Grid>
@@ -26,41 +26,124 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
-                    <RadioButton Content="White" Grid.Column="0" Margin="10 0 0 0" />
-                    <RadioButton Content="Black" Grid.Column="1"/>
+                    <RadioButton  Grid.Column="0" Margin="10 0 0 0" />
+                    <TextBlock Text="White" FontFamily="{StaticResource CustomFont2}" FontSize="15" Grid.Column="1" Margin="5 0 0 0" />
+                    <RadioButton Content="Black" FontFamily="{StaticResource CustomFont}" FontSize="16" Grid.Column="2" Margin="5 0 0 0" />
                 </Grid>
                 
             </StackPanel>
             <!--AutoMove toggle Button-->
             <StackPanel Grid.Column="1">
-                <ToggleButton x:Name="automoveButton" Margin="10 20 5 5" Background="{Binding UiState.ButtonBackground}"
+                <ToggleButton x:Name="automoveButton" Margin="10 15 5 5" Background="White"
               Command="{Binding ButtonClickCommand}">
- 
+
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/HorseJump.png" Width="16" Height="16" Margin="0 0 5 0" />
-                        <TextBlock Text="AUTO MOVE" />
+                        <Image Source="/Resources/HorseJump.png" Width="16" Height="20" Margin="0 0 5 0" />
+                        <TextBlock Text="AUTO MOVE" FontWeight="Bold" />
                     </StackPanel>
                 </ToggleButton>
             </StackPanel>
-
         </Grid>
-        
+
+        <StackPanel>
+            <TextBlock Text="Visual toggles" FontWeight="Bold" Margin="10 10"/>
+            <Grid>
+                
+                
+                <!--Checkboxes -->
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Content="EvalBar" Grid.Column="0" Margin="50 0 0 0"/>
+                <CheckBox Content="Analyze Moves" Grid.Column="1" />
+
+            </Grid>
+            
+        </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8*" />
             </Grid.ColumnDefinitions>
-            
-            <Button Content="Iflhkslæfh" />
-            <Button Content="fgshsgh" />
-            <Button Content="{Binding UiState.Test}" />
+            <!--Fen notation-->
+            <TextBlock Text="FEN:" Grid.Column="0" FontSize="10" FontWeight="Light" Margin="10 13 0 15" />
+            <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.FEN}" FontSize="10" Margin="0 13 5 14" />
 
         </Grid>
-            
+        
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Number of Lines" Grid.Column="0" Margin="5" />
+                <ComboBox SelectedIndex="{Binding UiState.SelectedIndex}" Padding="10 3 3 3" Grid.Column="1" Margin="0 0 5 0" FontSize="14" >
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                    <ComboBoxItem>4</ComboBoxItem>
+                    <ComboBoxItem>5</ComboBoxItem>
+
+                </ComboBox>
+            </Grid>
+            <Grid x:Name="grid0" Visibility="Visible" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP1}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV1}" Padding="5 0 0 0 " />
+            </Grid>
+            <Grid x:Name="grid1" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+            </Grid>
+            <Grid x:Name="grid2" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+            </Grid>
+            <Grid x:Name="grid3" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+            </Grid>
+            <Grid x:Name="grid4" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+            </Grid>
+            <Grid x:Name="grid5" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+            </Grid>
+
+        </StackPanel>
     </StackPanel>
+    
         
 
 

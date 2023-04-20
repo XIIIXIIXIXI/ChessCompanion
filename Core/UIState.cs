@@ -14,6 +14,27 @@ namespace ChessCompanion.Core
     public class UIState : INotifyPropertyChanged
     {
 
+        private int _selectedIndex;
+
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+                OnSelectedIndexChanged();
+              
+            }
+        }
+        public event EventHandler SelectedIndexChanged;
+
+        protected virtual void OnSelectedIndexChanged()
+        {
+            SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+
         private bool _isAutomoveEnabled;
         public bool IsAutomoveEnabled
         {
