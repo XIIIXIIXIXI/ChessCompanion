@@ -93,7 +93,9 @@ namespace ChessCompanion
                     break;
             }
 
-            mediator.SetEngineOption("MultiPV", UiState.SelectedIndex+1);
+
+            mediator.setEngineLines(UiState.SelectedIndex + 1);
+            
         }
 
 

@@ -12,14 +12,13 @@ namespace ChessCompanion.Core
      */
     public class MainState : INotifyPropertyChanged
     {
-        private string _moves = "";
-        public string Moves
+
+        public MainState()
         {
-            get { return _moves; }
-            set
+            MoveInfos = new MoveInfo[5];
+            for (int i = 0; i < 5; i++)
             {
-                _moves = value;
-                OnPropertyChanged(nameof(Moves));
+                MoveInfos[i] = new MoveInfo();
             }
         }
 
@@ -31,6 +30,101 @@ namespace ChessCompanion.Core
             {
                 _fen = value;
                 OnPropertyChanged(nameof(FEN));
+            }
+        }
+
+        private MoveInfo[] _moveInfos = new MoveInfo[5];
+        public MoveInfo[] MoveInfos
+        {
+            get { return _moveInfos; }
+            set
+            {
+                _moveInfos = value;
+                OnPropertyChanged(nameof(MoveInfos));
+            }
+        }
+        private bool _isWhite;
+        public bool IsWhite
+        {
+            get { return _isWhite; }
+            set
+            {
+                _isWhite = value;
+                OnPropertyChanged(nameof(IsWhite));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        private string _moves = "";
+       
+    }
+    public class MoveInfo : INotifyPropertyChanged
+    {
+        private string _moves;
+        public string Moves
+        {
+            get { return _moves; }
+            set
+            {
+                _moves = value;
+                OnPropertyChanged(nameof(Moves));
+            }
+        }
+
+        private int? _cp;
+        public int? CP
+        {
+            get { return _cp; }
+            set
+            {
+                _cp = value;
+                OnPropertyChanged(nameof(CP));
+            }
+        }
+
+        private int? _mate;
+        public int? MATE
+        {
+            get { return _mate; }
+            set
+            {
+                _mate = value;
+                OnPropertyChanged(nameof(MATE));
+            }
+        }
+
+        private string _pv;
+        public string PV
+        {
+            get { return _pv; }
+            set
+            {
+                _pv = value;
+                OnPropertyChanged(nameof(PV));
+            }
+        }
+        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}
+/*
+ *  public string Moves
+        {
+            get { return _moves; }
+            set
+            {
+                _moves = value;
+                OnPropertyChanged(nameof(Moves));
             }
         }
 
@@ -65,22 +159,4 @@ namespace ChessCompanion.Core
                 OnPropertyChanged(nameof(PV));
             }
         }
-
-        private bool _isWhite;
-        public bool IsWhite
-        {
-            get { return _isWhite; }
-            set
-            {
-                _isWhite = value;
-                OnPropertyChanged(nameof(IsWhite));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-}
+ */

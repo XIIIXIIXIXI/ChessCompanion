@@ -129,7 +129,7 @@ namespace ChessCompanion.MVVM.Utility
             bool promotion = false;
             string pv = "";
             int bestMoveIndex = -1;
-            TopMove[] topMoves = new TopMove[5];
+            TopMove[] topMoves = new TopMove[lines];
 
             while (true)
             {

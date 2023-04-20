@@ -38,13 +38,14 @@ namespace ChessCompanion.MVVM.ViewModel
                 while (mediator.IsResignElementPresent())
                 {
                     mediator.WaitForOpponentToMove();
-                    mediator.GetBestMoveWithInfo();
+                    //mediator.GetBestMoveWithInfo();
+                    mediator.GetBestMoveMultiLines();
                     mediator.UpdateEvaluationBar();
                     mediator.WaitForPlayerToMove();
                     
                     try
                     {
-                        mediator.AnalyzeMove();
+                        //mediator.AnalyzeMove();
                     }
                     catch
                     {

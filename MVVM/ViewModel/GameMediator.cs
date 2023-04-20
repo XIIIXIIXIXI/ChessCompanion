@@ -31,7 +31,6 @@ namespace ChessCompanion.MVVM.ViewModel
             this.engine = engine;
             this.gameScraper = gameScraper;
             this.evaluationBar = evaluationBar;
-
         }
 
         public MainState State => state;
@@ -47,7 +46,7 @@ namespace ChessCompanion.MVVM.ViewModel
             UpdateBoardState();
 
             engine.SetPosition(State.FEN);
-            State.Moves = engine.GetBestMove(300);
+            //State.Moves = engine.GetBestMove(300);
         }
 
         public void GetBestMoveWithInfo()
@@ -57,7 +56,15 @@ namespace ChessCompanion.MVVM.ViewModel
             engine.SetPosition(State.FEN);
             (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
             UpdateCurrentBestMove(bestMove, cp, mate, promotion, pv);
-            UpdateStateWithCurrentBestMove();
+            //UpdateStateWithCurrentBestMove();
+        }
+        public void GetBestMoveMultiLines()
+        {
+            UpdateBoardState();
+            engine.SetPosition(State.FEN);
+            TopMove[] topMoves = engine.GetMultipleLines(300);
+            UpdateCurrentBestMove(topMoves[0].bestMove, topMoves[0].cp, topMoves[0].mate, topMoves[0].promotion, topMoves[0].pv);
+            UpdateStatesWithCurrentTopMoves(topMoves);
         }
 
         public void AnalyzeMove()
@@ -91,6 +98,11 @@ namespace ChessCompanion.MVVM.ViewModel
             engine.SetOption(name, value);
         }
 
+        public void setEngineLines(int lines)
+        {
+            engine.setLines(lines);
+        }
+
         private void UpdateBoardState()
         {
             board.ModifyBoard(gameScraper.ExtractChessPieces());
@@ -103,7 +115,18 @@ namespace ChessCompanion.MVVM.ViewModel
             currentBestMove.FEN = board.GetFENString(gameScraper.BlackOrWhiteToMove());
         }
 
-        private void UpdateStateWithCurrentBestMove()
+        private void UpdateStatesWithCurrentTopMoves(TopMove[] topMoves)
+        {
+            for (int i = 0; i < topMoves.Length; i++)
+            {
+                State.MoveInfos[i].Moves = topMoves[i].bestMove;
+                State.MoveInfos[i].CP = topMoves[i].cp;
+                State.MoveInfos[i].PV = topMoves[i].pv;
+                State.MoveInfos[i].MATE = topMoves[i].mate;
+            }
+        }
+
+/*        private void UpdateStateWithCurrentBestMove()
         {
             State.Moves = currentBestMove.bestMove;
             State.PV = currentBestMove.pv;
@@ -118,7 +141,7 @@ namespace ChessCompanion.MVVM.ViewModel
                 State.MATE = currentBestMove.mate;
             }
         }
-
+*/
         
         private void UpdateLastBestMove()
         {
@@ -132,10 +155,10 @@ namespace ChessCompanion.MVVM.ViewModel
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
         }
         //Utility code for game loop
-        public void makeMove()
+      /*  public void makeMove()
         {
             gameScraper.MakeMove(State.Moves);
-        }
+        }*/
         public void WaitForFirstMove()
         {
             gameScraper.WaitForFirstMove();

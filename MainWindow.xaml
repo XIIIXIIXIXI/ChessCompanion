@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="300">
-
+    
 
 
 
@@ -93,54 +93,55 @@
                 </ComboBox>
             </Grid>
             <Grid x:Name="grid0" Visibility="Visible" Margin="10">
+                <Grid.Resources>
+                    <local:CPorMateConverter x:Key="CPorMateConverter" />
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP1}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV1}" Padding="5 0 0 0 " />
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[0], Converter={StaticResource CPorMateConverter}}"  Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[0].PV}"  Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid1" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+                <TextBox Grid.Column="0" IsReadOnly="True" Padding="5 0 0 0">
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="State.MoveInfos[1].CP"/>
+                        <Binding Path="State.MoveInfos[1].MATE"/>
+                    </MultiBinding>
+                </TextBox>
+                <!--<TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[1].CP}" Padding="5 0 0 0"/>-->
+                <!--<TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[1].PV}" Padding="5 0 0 0 " />-->
             </Grid>
             <Grid x:Name="grid2" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[2].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[2].PV}" Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid3" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[3].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[3].PV}" Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid4" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[4].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[4].PV}" Padding="5 0 0 0 " />
             </Grid>
-            <Grid x:Name="grid5" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="6*" />
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.CP2}" Padding="5 0 0 0"/>
-                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.PV2}" Padding="5 0 0 0 " />
-            </Grid>
-
+            
         </StackPanel>
     </StackPanel>
     
