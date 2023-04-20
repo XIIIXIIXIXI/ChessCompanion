@@ -93,14 +93,17 @@
                 </ComboBox>
             </Grid>
             <Grid x:Name="grid0" Visibility="Visible" Margin="10">
-                <Grid.Resources>
-                    <local:CPorMateConverter x:Key="CPorMateConverter" />
-                </Grid.Resources>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[0], Converter={StaticResource CPorMateConverter}}"  Padding="5 0 0 0"/>
+                <TextBox Grid.Column="0" IsReadOnly="True" Padding="5 0 0 0">
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="State.MoveInfos[0].CP"/>
+                        <Binding Path="State.MoveInfos[0].MATE"/>
+                    </MultiBinding>
+                </TextBox>
                 <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[0].PV}"  Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid1" Visibility="Collapsed">
@@ -115,14 +118,19 @@
                     </MultiBinding>
                 </TextBox>
                 <!--<TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[1].CP}" Padding="5 0 0 0"/>-->
-                <!--<TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[1].PV}" Padding="5 0 0 0 " />-->
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[1].PV}" Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid2" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[2].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="0" IsReadOnly="True" Padding="5 0 0 0">
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="State.MoveInfos[2].CP"/>
+                        <Binding Path="State.MoveInfos[2].MATE"/>
+                    </MultiBinding>
+                </TextBox>
                 <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[2].PV}" Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid3" Visibility="Collapsed">
@@ -130,7 +138,12 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[3].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="0" IsReadOnly="True" Padding="5 0 0 0">
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="State.MoveInfos[3].CP"/>
+                        <Binding Path="State.MoveInfos[3].MATE"/>
+                    </MultiBinding>
+                </TextBox>
                 <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[3].PV}" Padding="5 0 0 0 " />
             </Grid>
             <Grid x:Name="grid4" Visibility="Collapsed">
@@ -138,7 +151,12 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding State.MoveInfos[4].CP}" Padding="5 0 0 0"/>
+                <TextBox Grid.Column="0" IsReadOnly="True" Padding="5 0 0 0">
+                    <MultiBinding StringFormat="{}{0}{1}">
+                        <Binding Path="State.MoveInfos[4].CP"/>
+                        <Binding Path="State.MoveInfos[4].MATE"/>
+                    </MultiBinding>
+                </TextBox>
                 <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding State.MoveInfos[4].PV}" Padding="5 0 0 0 " />
             </Grid>
             
