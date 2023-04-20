@@ -129,7 +129,7 @@ namespace ChessCompanion.MVVM.Utility
             bool promotion = false;
             string pv = "";
             int bestMoveIndex = -1;
-            TopMove[] topMoves = new TopMove[lines-1];
+            TopMove[] topMoves = new TopMove[5];
 
             while (true)
             {
@@ -157,7 +157,7 @@ namespace ChessCompanion.MVVM.Utility
                     if (bestMoveIndex != lines)
                     {
                         // Swap the element containing the bestmove string with the last element of the array
-                        string temp = lastFiveLines[lines-1];
+                        string temp = lastFiveLines[lines];
                         lastFiveLines[lines] = lastFiveLines[bestMoveIndex];
                         lastFiveLines[bestMoveIndex] = temp;
                     }
@@ -168,7 +168,7 @@ namespace ChessCompanion.MVVM.Utility
 
             
             // Parse the last five lines for additional information
-            for (int i = 0; i < lines-1; i++)
+            for (int i = 0; i < lines; i++)
             {
                 topMoves[i] = new TopMove();
                 string currentLine = lastFiveLines[i];
@@ -212,6 +212,10 @@ namespace ChessCompanion.MVVM.Utility
                 }
                 
                 topMoves[i].setTopMove(bestMove, cp, mate, promotion, pv);
+            }
+            if (topMoves.Length > 1)
+            {
+                OrderTopMoves(topMoves);
             }
 
             return topMoves;
