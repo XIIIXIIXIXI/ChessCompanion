@@ -31,6 +31,7 @@ namespace ChessCompanion
         public MainWindow()
         {
             InitializeComponent();
+            this.Topmost = true;
             var driver = new ChromeDriver();
             var scraper = new Scraper(driver);
             var gameScraper = new GameScraper(driver);

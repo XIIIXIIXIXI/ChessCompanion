@@ -120,8 +120,19 @@ namespace ChessCompanion.MVVM.ViewModel
             for (int i = 0; i < topMoves.Length; i++)
             {
                 State.MoveInfos[i].Moves = topMoves[i].bestMove;
-                State.MoveInfos[i].CP = topMoves[i].cp;
                 State.MoveInfos[i].PV = topMoves[i].pv;
+
+                if (State.MoveInfos[i].MATE == null)
+                {
+                    State.MoveInfos[i].MATE = null;
+                    State.MoveInfos[i].CP = topMoves[i].cp;
+                }
+                else
+                {
+                    State.MoveInfos[i].CP = null;
+                    State.MoveInfos[i].MATE = topMoves[i].mate;
+                }
+                State.MoveInfos[i].CP = topMoves[i].cp;
                 State.MoveInfos[i].MATE = topMoves[i].mate;
             }
         }
