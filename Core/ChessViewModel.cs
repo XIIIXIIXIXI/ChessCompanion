@@ -33,10 +33,21 @@ namespace ChessCompanion
 
         private void OnButtonClick(object parameter)
         {
-            
-            Debug.WriteLine("Clicked");
             UiState.IsAutomoveEnabled = !UiState.IsAutomoveEnabled;
-            UiState.Test = "clicked";
+            if (UiState.IsAutomoveEnabled)
+            {
+                Debug.WriteLine("On");
+                mediator.EnableAutoMove();
+                
+            }
+            else
+            {
+                Debug.WriteLine("Off");
+                mediator.isAutoMoveEnabled = false;
+            }
+            
+            
+            
         }
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)

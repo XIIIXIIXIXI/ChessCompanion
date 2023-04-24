@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace ChessCompanion.MVVM.Utility
 {
@@ -17,6 +19,7 @@ namespace ChessCompanion.MVVM.Utility
         public bool isWhite;
         private int squareWidth;
         private IWebElement gameboard;
+        public CancellationTokenSource cancellationTokenSource; //Used for cancelling the wait for player to move if the user have enabled automove.
 
         public GameScraper(IWebDriver driver)
         {
@@ -26,8 +29,10 @@ namespace ChessCompanion.MVVM.Utility
         }
         public void Setup()
         {
+            this.cancellationTokenSource = new CancellationTokenSource();
             CaptureBoardPosition();
             FindPlayerColor();
+
         }
 
         public IReadOnlyCollection<IWebElement> ExtractChessPieces()
@@ -121,6 +126,10 @@ namespace ChessCompanion.MVVM.Utility
                 // Wait up to 6000 seconds for the move list to have an odd number of moves
 
                 wait.Until(driver => {
+                    if (cancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        return true; // exit waiting if cancellation requested
+                    }
                     var moveListElem = driver.FindElement(By.TagName("vertical-move-list"));
                     var moves = moveListElem.FindElements(By.CssSelector("div.move [data-ply]"));
                     int lastMove;
@@ -138,7 +147,9 @@ namespace ChessCompanion.MVVM.Utility
                     return lastMove % 2 == 0 || !IsResignElementPresent();
                 });
             }
+            
         }
+        
 
         //Make move for player by sending a click action to the website
         public void MakeMove(string move)

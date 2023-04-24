@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChessCompanion.MVVM.ViewModel
@@ -22,6 +23,10 @@ namespace ChessCompanion.MVVM.ViewModel
         private readonly TopMove currentBestMove = new TopMove();
         private readonly TopMove lastBestMove = new TopMove();
         private readonly EvaluationBar evaluationBar;
+
+        //game flow variables
+        public bool isAutoMoveEnabled = false;
+        
 
         public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper, EvaluationBar evaluationBar)
         {
@@ -65,6 +70,10 @@ namespace ChessCompanion.MVVM.ViewModel
             TopMove[] topMoves = engine.GetMultipleLines(300);
             UpdateCurrentBestMove(topMoves[0].bestMove, topMoves[0].cp, topMoves[0].mate, topMoves[0].promotion, topMoves[0].pv);
             UpdateStatesWithCurrentTopMoves(topMoves);
+        }
+        public void makeBestMove()
+        {
+            gameScraper.MakeMove(currentBestMove.bestMove);
         }
 
         public void AnalyzeMove()
@@ -199,6 +208,21 @@ namespace ChessCompanion.MVVM.ViewModel
         {
             return gameScraper.isWhite;
         }
+
+        // Game flow
+        public void EnableAutoMove()
+        {
+            isAutoMoveEnabled = true;
+            // abort the wait in WaitForPlayerToMove() function
+            if (gameScraper.cancellationTokenSource != null)
+            {
+                gameScraper.cancellationTokenSource.Cancel();
+            }
+            gameScraper.cancellationTokenSource =  new CancellationTokenSource(); // create new instance of CancellationTokenSource
+            makeBestMove();
+        }
+
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
 

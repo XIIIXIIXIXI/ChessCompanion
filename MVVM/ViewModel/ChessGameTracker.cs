@@ -41,6 +41,10 @@ namespace ChessCompanion.MVVM.ViewModel
                     //mediator.GetBestMoveWithInfo();
                     mediator.GetBestMoveMultiLines();
                     mediator.UpdateEvaluationBar();
+                    if (mediator.isAutoMoveEnabled)
+                    {
+                        mediator.makeBestMove();
+                    }
                     mediator.WaitForPlayerToMove();
                     
                     try

@@ -18,6 +18,7 @@ namespace ChessCompanion.MVVM.Utility
             _process.StartInfo.UseShellExecute = false;
             _process.StartInfo.RedirectStandardInput = true;
             _process.StartInfo.RedirectStandardOutput = true;
+            _process.StartInfo.CreateNoWindow = true; // This hides the process window
             _process.Start();
             Initialize();
         }

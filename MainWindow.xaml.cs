@@ -31,13 +31,16 @@ namespace ChessCompanion
         public MainWindow()
         {
             InitializeComponent();
-            this.Topmost = true;
-            var driver = new ChromeDriver();
+            this.Topmost = true; //Makes window always on top
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true; // This hides the console window
+            var driver = new ChromeDriver(service);
             var scraper = new Scraper(driver);
             var gameScraper = new GameScraper(driver);
             var board = new ChessBoard();
-            IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
-            var evaluationBar = new EvaluationBar(driver);
+            //IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
+            IEngine engine = new Engine(@"C:\Users\marti\source\repos\martinkoch1\stockfish_20090216_x64_avx2");
+        var evaluationBar = new EvaluationBar(driver);
             
 
             mediator = new GameMediator(driver, scraper, board, engine, gameScraper, evaluationBar);
