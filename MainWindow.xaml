@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessCompanion"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:converter="clr-namespace:ChessCompanion.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="300">
-    
+    <Window.Resources>
+        <converter:NegateBooleanConverter x:Key="NegateBooleanConverter"/>
+    </Window.Resources>
+
 
 
 
@@ -29,9 +33,9 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
-                    <RadioButton  Grid.Column="0" Margin="10 0 0 0" />
+                    <RadioButton IsChecked="{Binding State.IsWhite}"  Grid.Column="0" Margin="10 0 0 0"  />
                     <TextBlock Text="White" FontFamily="{StaticResource CustomFont2}" FontSize="15" Grid.Column="1" Margin="5 0 0 0" />
-                    <RadioButton Content="Black" FontFamily="{StaticResource CustomFont}" FontSize="16" Grid.Column="2" Margin="5 0 0 0" />
+                    <RadioButton IsChecked="{Binding State.IsWhite, Converter={StaticResource NegateBooleanConverter}}" Content="Black" FontFamily="{StaticResource CustomFont}" FontSize="16" Grid.Column="2" Margin="5 0 0 0" />
                 </Grid>
                 
             </StackPanel>

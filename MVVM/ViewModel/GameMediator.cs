@@ -203,6 +203,7 @@ namespace ChessCompanion.MVVM.ViewModel
         public void InitGameScraper()
         {
             gameScraper.Setup();
+            State.IsWhite = gameScraper.isWhite;
         }
         public bool PlayingAsWhite()
         {
