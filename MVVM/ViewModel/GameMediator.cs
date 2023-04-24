@@ -24,8 +24,10 @@ namespace ChessCompanion.MVVM.ViewModel
         private readonly TopMove lastBestMove = new TopMove();
         private readonly EvaluationBar evaluationBar;
 
+
         //game flow variables
         public bool isAutoMoveEnabled = false;
+        public bool isEvaluationBarEnabled = false;
         
 
         public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper, EvaluationBar evaluationBar)
@@ -46,13 +48,7 @@ namespace ChessCompanion.MVVM.ViewModel
             State.IsWhite = gameScraper.isWhite;
         }
 
-        public void GetBestMove()
-        {
-            UpdateBoardState();
-
-            engine.SetPosition(State.FEN);
-            //State.Moves = engine.GetBestMove(300);
-        }
+        
 
         public void GetBestMoveWithInfo()
         {
@@ -93,14 +89,29 @@ namespace ChessCompanion.MVVM.ViewModel
             scraper.ShowAnalyzedIcon(square, MoveScoreColors.IconData[score]);
         }
 
+        public void GetOpponentTopMove()
+        {
+            UpdateBoardState();
+            engine.SetPosition(State.FEN);
+            TopMove[] topMove = engine.GetMultipleLines(300);
+            evaluationBar.UpdateBar(gameScraper.isWhite, topMove[0].cp, topMove[0].mate, gameScraper.BlackOrWhiteToMove());
+
+        }
         public void EvaluationBarOn()
         {
             evaluationBar.CreateBar(gameScraper.isWhite);
+            isEvaluationBarEnabled = true;
         }
 
         public void UpdateEvaluationBar()
         {
             evaluationBar.UpdateBar(gameScraper.isWhite, currentBestMove.cp, currentBestMove.mate, gameScraper.BlackOrWhiteToMove());
+        }
+
+        public void RemoveEvaluationBar()
+        {
+            evaluationBar.RemoveBar();
+            isEvaluationBarEnabled = false;
         }
         public void SetEngineOption(string name, object value)
         {

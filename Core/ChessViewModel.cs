@@ -20,12 +20,15 @@ namespace ChessCompanion
         //maybe another gamemediator for click logic. 
         private readonly UIState uiState = new UIState();
         public RelayCommand ButtonClickCommand { get; }
-     
+        public RelayCommand EvalBarClickCommand { get; }
+        private bool evalBarOn = false;
+
         public ChessViewModel(GameMediator mediator)
         {
             this.mediator = mediator;
             UiState.SelectedIndexChanged += OnSelectedIndexChanged;
             ButtonClickCommand = new RelayCommand(OnButtonClick);
+            EvalBarClickCommand = new RelayCommand(OnEvalBarClick);
           
         }
         public MainState State => mediator.State;
@@ -45,9 +48,19 @@ namespace ChessCompanion
                 Debug.WriteLine("Off");
                 mediator.isAutoMoveEnabled = false;
             }
-            
-            
-            
+        }
+        private void OnEvalBarClick(object parameter)
+        {
+            evalBarOn = !evalBarOn;
+            if (evalBarOn)
+            {
+                mediator.EvaluationBarOn();
+            }
+            else
+            {
+                mediator.RemoveEvaluationBar();
+            }
+            Debug.WriteLine("EvalBarClick");
         }
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)

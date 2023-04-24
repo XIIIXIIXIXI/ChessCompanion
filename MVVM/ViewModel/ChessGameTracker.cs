@@ -34,13 +34,16 @@ namespace ChessCompanion.MVVM.ViewModel
                     mediator.WaitForFirstMove();
                 }
                 
-                mediator.EvaluationBarOn();
+                
                 while (mediator.IsResignElementPresent())
                 {
                     mediator.WaitForOpponentToMove();
                     //mediator.GetBestMoveWithInfo();
                     mediator.GetBestMoveMultiLines();
-                    mediator.UpdateEvaluationBar();
+                    if (mediator.isEvaluationBarEnabled)
+                    {
+                        mediator.UpdateEvaluationBar();
+                    }
                     if (mediator.isAutoMoveEnabled)
                     {
                         mediator.makeBestMove();
@@ -55,7 +58,11 @@ namespace ChessCompanion.MVVM.ViewModel
                     {
                         break; // exit loop if resign element is no longer present
                     }
-                    mediator.UpdateEvaluationBar();
+                    if (mediator.isEvaluationBarEnabled)
+                    {
+                        mediator.GetOpponentTopMove();
+                    }
+                    
                     Debug.WriteLine("------------");
                 }
 

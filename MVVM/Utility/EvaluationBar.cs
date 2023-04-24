@@ -143,6 +143,13 @@ namespace ChessCompanion.MVVM.Utility
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript(jsCode);
         }
+        public void RemoveBar()
+        {
+            string jsCode = @"var evaluationBar = document.querySelector('#board-layout-evaluation');
+                     evaluationBar.parentNode.removeChild(evaluationBar);";
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript(jsCode);
+        }
 
         public void UpdateBar(bool isWhite, int? cp, int? mate, char colorToMove)
         {
