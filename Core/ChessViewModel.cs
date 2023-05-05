@@ -58,6 +58,7 @@ namespace ChessCompanion
             if (evalBarOn)
             {
                 mediator.EvaluationBarOn();
+                //fdg
             }
             else
             {
