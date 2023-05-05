@@ -21,7 +21,9 @@ namespace ChessCompanion
         private readonly UIState uiState = new UIState();
         public RelayCommand ButtonClickCommand { get; }
         public RelayCommand EvalBarClickCommand { get; }
+        public RelayCommand AnalyzeClickCommand { get; }
         private bool evalBarOn = false;
+        private bool analyseOn = false;
 
         public ChessViewModel(GameMediator mediator)
         {
@@ -29,6 +31,7 @@ namespace ChessCompanion
             UiState.SelectedIndexChanged += OnSelectedIndexChanged;
             ButtonClickCommand = new RelayCommand(OnButtonClick);
             EvalBarClickCommand = new RelayCommand(OnEvalBarClick);
+            AnalyzeClickCommand = new RelayCommand(OnAnalyzeClick);
           
         }
         public MainState State => mediator.State;
@@ -61,6 +64,18 @@ namespace ChessCompanion
                 mediator.RemoveEvaluationBar();
             }
             Debug.WriteLine("EvalBarClick");
+        }
+        private void OnAnalyzeClick(object parameter)
+        {
+            analyseOn = !analyseOn;
+            if (analyseOn)
+            {
+                mediator.isAnalysisEnabled = true;
+            }
+            else
+            {
+                mediator.isAnalysisEnabled= false;
+            }
         }
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)

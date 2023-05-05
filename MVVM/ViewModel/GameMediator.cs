@@ -28,6 +28,7 @@ namespace ChessCompanion.MVVM.ViewModel
         //game flow variables
         public bool isAutoMoveEnabled = false;
         public bool isEvaluationBarEnabled = false;
+        public bool isAnalysisEnabled = false;
         
 
         public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper, EvaluationBar evaluationBar)
@@ -79,12 +80,12 @@ namespace ChessCompanion.MVVM.ViewModel
             UpdateBoardState();
 
             engine.SetPosition(State.FEN);
-            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
-            UpdateCurrentBestMove(bestMove, cp, mate, promotion, pv);
+            TopMove[] topMove = engine.GetMultipleLines(300);
+            UpdateCurrentBestMove(topMove[0].bestMove, topMove[0].cp, topMove[0].mate, topMove[0].promotion, topMove[0].pv);
 
             MoveScore score = engine.AnalyzeLastMove(lastBestMove, currentBestMove);
 
-            string move = gameScraper.GetLatestMoveForWhite();
+            string move = gameScraper.GetLatestMoveForPlayer();
             string square = board.TranslateMoveToSquare(move, gameScraper.isWhite);
             scraper.ShowAnalyzedIcon(square, MoveScoreColors.IconData[score]);
         }
@@ -185,11 +186,6 @@ namespace ChessCompanion.MVVM.ViewModel
 
             currentBestMove.setTopMove(bestMove, cp, mate, promotion, pv);
         }
-        //Utility code for game loop
-      /*  public void makeMove()
-        {
-            gameScraper.MakeMove(State.Moves);
-        }*/
         public void WaitForFirstMove()
         {
             gameScraper.WaitForFirstMove();

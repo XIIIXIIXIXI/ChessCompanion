@@ -197,7 +197,7 @@ namespace ChessCompanion.MVVM.Utility
             this.gameboard = gameBoard;
         }
         
-        public string GetLatestMoveForWhite()
+        public string GetLatestMoveForPlayer()
         {
             // find all the move elements
             IReadOnlyCollection<IWebElement> moveElements = driver.FindElements(By.CssSelector(".move"));

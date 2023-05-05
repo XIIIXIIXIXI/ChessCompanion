@@ -49,15 +49,20 @@ namespace ChessCompanion.MVVM.ViewModel
                         mediator.makeBestMove();
                     }
                     mediator.WaitForPlayerToMove();
-                    
-                    try
+
+                    if (mediator.isAnalysisEnabled)
                     {
-                        //mediator.AnalyzeMove();
+                        try
+                        {
+
+                            mediator.AnalyzeMove();
+                        }
+                        catch
+                        {
+                            break; // exit loop if resign element is no longer present
+                        }
                     }
-                    catch
-                    {
-                        break; // exit loop if resign element is no longer present
-                    }
+                       
                     if (mediator.isEvaluationBarEnabled)
                     {
                         mediator.GetOpponentTopMove();
