@@ -14,9 +14,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChessCompanion.MVVM.Model;
-using ChessCompanion.MVVM.Utility;
+using ChessCompanion.MVVM.Model.Data;
 using ChessCompanion.MVVM.ViewModel;
 using OpenQA.Selenium.Chrome;
+using ChessCompanion.Core;
+using System.IO;
 
 namespace ChessCompanion
 {
@@ -38,9 +40,15 @@ namespace ChessCompanion
             var scraper = new Scraper(driver);
             var gameScraper = new GameScraper(driver);
             var board = new ChessBoard();
+
             //IEngine engine = new Engine(@"C:\Users\marti\source\repos\chessEval\chessEval\stockfish_20090216_x64_avx2");
-            IEngine engine = new Engine(@"C:\Users\marti\source\repos\martinkoch1\stockfish_20090216_x64_avx2");
-        var evaluationBar = new EvaluationBar(driver);
+            string folderPath = @"stockfish_20090216_x64"; // folder is located in the same directory as your application
+
+            string currentDirectory = Directory.GetCurrentDirectory(); // Get the current working directory
+            string fullPath = System.IO.Path.Combine(currentDirectory, folderPath); // Combine the current directory with the specified folder path
+            IEngine engine = new Engine(@"stockfish_20090216_x64");
+            //IEngine engine = new Engine(@"C:\Users\marti\source\repos\martinkoch1\Maia");
+            var evaluationBar = new EvaluationBar(driver);
             
 
             mediator = new GameMediator(driver, scraper, board, engine, gameScraper, evaluationBar);

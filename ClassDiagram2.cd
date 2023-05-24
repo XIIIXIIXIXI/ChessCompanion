@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ChessCompanion.MVVM.Model.Data.GameScraper">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABIAAACAAAAAAYAAAAAACECBBIAoAAAAAAkAAAABA=</HashCode>
+      <FileName>MVVM\Model\Data\GameScraper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scraper">
+    <Position X="6" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAABAAAAAAgAAAAAAAAAAACAAAAAABEIAAAAAAAABAA=</HashCode>
+      <FileName>MVVM\Model\Data\Scraper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.Model.EvaluationBar" Collapsed="true">
+    <Position X="12.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAACAAAACACAA=</HashCode>
+      <FileName>MVVM\Model\DOM manipulators\EvaluationBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.Model.ChessGameTracker" Collapsed="true">
+    <Position X="6.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\Model\ChessGameTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.Model.Engine" BaseTypeListCollapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAAAQAACQgAAQAAIIIAAgAACQAAAAIAAAA=</HashCode>
+      <FileName>MVVM\Model\Engine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChessCompanion.Core.ChessBoard">
+    <Position X="11" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAQAAAAAAAAAgAACAAQAAAABAAAAAAAoAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\Model\Internal Board\ChessBoard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.Core.ChessPiece">
+    <Position X="13" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIIAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>MVVM\Model\Internal Board\ChessPieces.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.Model.Utility.MoveScoreColors" Collapsed="true">
+    <Position X="4.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\Model\Utility\MoveScoreColors.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.Model.Utility.TopMove">
+    <Position X="13" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAIAAgQAAAAAAAAAAAABAAAAIAAAAAQAAA=</HashCode>
+      <FileName>MVVM\Model\Utility\TopMove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.ViewModel.ChessViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAACAQAAAAIAAAQEAAgAAACAsAAAAAAQAAEAQ=</HashCode>
+      <FileName>MVVM\ViewModel\ChessViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChessCompanion.MVVM.ViewModel.GameMediator" Collapsed="true">
+    <Position X="6.75" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIAICAABCgQgiAIIAAgCDiAoAF4gAgEoAAAhBQAAAE=</HashCode>
+      <FileName>MVVM\ViewModel\GameMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCompanion.MVVM.ViewModel.MainState" BaseTypeListCollapsed="true">
+    <Position X="3" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAJAAIEQAAgAAAAAAggAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\ViewModel\MainState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChessCompanion.MVVM.ViewModel.MoveInfo" BaseTypeListCollapsed="true">
+    <Position X="1.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAACAIAAKAACAgAAAAEAAAAAQAAABAAA=</HashCode>
+      <FileName>MVVM\ViewModel\MainState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChessCompanion.MVVM.ViewModel.UIState" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAABAgAAACgAAJIBACAAAAAA=</HashCode>
+      <FileName>MVVM\ViewModel\UIState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.158" Collapsed="true" />
+  </Class>
+  <Class Name="ChessCompanion.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAE=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="IconData">
+    <Position X="2.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>MVVM\Model\Utility\MoveScoreColors.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="ChessCompanion.MVVM.Model.IEngine" Collapsed="true">
+    <Position X="9" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAACQgAAAAAIAAAAgAAAQAAAAIAAAA=</HashCode>
+      <FileName>MVVM\Model\IEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCompanion.Core.IChessBoard" Collapsed="true">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAQAAAAAAAAAAAACAAQAAAABAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\Model\Internal Board\IChessBoard.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MoveScore">
+    <Position X="0.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAICAQAAABAAAAAAACAAAAQABIIAAAAAAAACAE=</HashCode>
+      <FileName>MVVM\Model\Utility\MoveScoreColors.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

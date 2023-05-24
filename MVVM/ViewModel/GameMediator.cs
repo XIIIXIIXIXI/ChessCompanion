@@ -1,6 +1,7 @@
 ﻿using ChessCompanion.Core;
 using ChessCompanion.MVVM.Model;
-using ChessCompanion.MVVM.Utility;
+using ChessCompanion.MVVM.Model.Data;
+using ChessCompanion.MVVM.Model.Utility;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,10 @@ namespace ChessCompanion.MVVM.ViewModel
         private readonly TopMove lastBestMove = new TopMove();
         private readonly EvaluationBar evaluationBar;
 
-
-        //game flow variables
+        //gameflow variables
         public bool isAutoMoveEnabled = false;
         public bool isEvaluationBarEnabled = false;
         public bool isAnalysisEnabled = false;
-        
-
         public GameMediator(IWebDriver driver, Scraper scraper, ChessBoard board, IEngine engine, GameScraper gameScraper, EvaluationBar evaluationBar)
         {
             this.driver = driver;
@@ -43,23 +41,6 @@ namespace ChessCompanion.MVVM.ViewModel
 
         public MainState State => state;
 
-        public void UpdatePlayerColor()
-        {
-            gameScraper.FindPlayerColor();
-            State.IsWhite = gameScraper.isWhite;
-        }
-
-        
-
-        public void GetBestMoveWithInfo()
-        {
-            UpdateBoardState();
-
-            engine.SetPosition(State.FEN);
-            (string bestMove, int? cp, int? mate, bool promotion, string pv) = engine.GetBestMoveWithInfo(300);
-            UpdateCurrentBestMove(bestMove, cp, mate, promotion, pv);
-            //UpdateStateWithCurrentBestMove();
-        }
         public void GetBestMoveMultiLines()
         {
             UpdateBoardState();
@@ -228,6 +209,11 @@ namespace ChessCompanion.MVVM.ViewModel
             }
             gameScraper.cancellationTokenSource =  new CancellationTokenSource(); // create new instance of CancellationTokenSource
             makeBestMove();
+        }
+
+        public void removeAnalyseIcon()
+        {
+            scraper.removeAnalyzeIcon();
         }
 
        

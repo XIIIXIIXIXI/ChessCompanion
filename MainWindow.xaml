@@ -16,15 +16,7 @@
     
     
     <StackPanel >
-        <!--Top bar-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button  Height="15" Grid.Column="0"></Button>
-            <Button Height="15" Grid.Column="1"></Button>
-        </Grid>
+        
         <!-- Player Color & Lines-->
         <Grid>
             <Grid.ColumnDefinitions>
@@ -43,7 +35,7 @@
                     </Grid.ColumnDefinitions>
                     <RadioButton IsChecked="{Binding State.IsWhite}"  Grid.Column="0" Margin="10 0 0 0"  />
                     <TextBlock Text="White" FontFamily="{StaticResource CustomFont2}" FontSize="15" Grid.Column="1" Margin="5 0 0 0" />
-                    <RadioButton IsChecked="{Binding State.IsWhite, Converter={StaticResource NegateBooleanConverter}}" Content="Black" FontFamily="{StaticResource CustomFont}" FontSize="16" Grid.Column="2" Margin="5 0 0 0" />
+                    <RadioButton IsChecked="{Binding State.IsWhite, Converter={StaticResource NegateBooleanConverter}}" IsEnabled="False" Content="Black" FontFamily="{StaticResource CustomFont}" FontSize="16" Grid.Column="2" Margin="5 0 0 0" />
                 </Grid>
                 
             </StackPanel>
