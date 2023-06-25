@@ -10,9 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
-
-
-
 public class Scraper
 {
     public IWebDriver driver; 
@@ -80,6 +77,8 @@ public class Scraper
     {
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
         wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.CssSelector("span.small-controls-icon.icon-font-chess.flag, span.icon-font-chess.flag.resign-button-icon")));
+        //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.CssSelector("span.icon-font-chess.flag.resign-button-icon")));
+        
     }
     //draw icon on square that indicates how good a move was
     public void ShowAnalyzedIcon (string lastBestMove, IconData lastMoveScore)

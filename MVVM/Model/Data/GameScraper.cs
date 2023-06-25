@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using ChessCompanion.MVVM.Model.Utility;
+using System.Windows.Documents;
+using ChessCompanion.Core;
 
 namespace ChessCompanion.MVVM.Model.Data
 {
@@ -198,8 +200,9 @@ namespace ChessCompanion.MVVM.Model.Data
         // Find the position of the board and square widths
         public void CaptureBoardPosition()
         {
+            
             IWebElement piece = driver.FindElement(By.CssSelector("#board-vs-personalities > div.piece.br.square-18"));
-
+            //IWebElement piece = driver.FindElement(By.CssSelector("#board-single > div.piece.br.square-18"));
             IWebElement gameBoard = driver.FindElement(By.ClassName("coordinates"));
             squareWidth = piece.Size.Width;
             gameboard = gameBoard;
@@ -243,6 +246,7 @@ namespace ChessCompanion.MVVM.Model.Data
             try
             {
                 driver.FindElement(By.CssSelector("button[data-cy='Resign']"));
+                //driver.FindElement(By.CssSelector("button[aria-label='Resign']"));
                 return true;
 
             }
@@ -260,6 +264,7 @@ namespace ChessCompanion.MVVM.Model.Data
 
             }
         }
+        
 
     }
 

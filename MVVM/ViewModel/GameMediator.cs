@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -122,7 +123,8 @@ namespace ChessCompanion.MVVM.ViewModel
             for (int i = 0; i < topMoves.Length; i++)
             {
                 State.MoveInfos[i].Moves = topMoves[i].bestMove;
-                State.MoveInfos[i].PV = topMoves[i].pv;
+                TandemChess();
+                //State.MoveInfos[i].PV = topMoves[i].pv;
 
                 if (State.MoveInfos[i].MATE == null)
                 {
@@ -137,6 +139,14 @@ namespace ChessCompanion.MVVM.ViewModel
                 State.MoveInfos[i].CP = topMoves[i].cp;
                 State.MoveInfos[i].MATE = topMoves[i].mate;
             }
+        }
+
+        public void TandemChess()
+        {
+             
+            String move = board.GetPieceFromSquare(currentBestMove.bestMove);
+            State.MoveInfos[0].PV = move;
+            Debug.WriteLine(move);
         }
 
 /*        private void UpdateStateWithCurrentBestMove()

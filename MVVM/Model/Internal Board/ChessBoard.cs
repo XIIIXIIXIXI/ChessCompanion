@@ -228,6 +228,19 @@ namespace ChessCompanion.Core
             }
 
         }
+        public string GetPieceFromSquare(string move)
+        {
+            var fromCol = move[0] - 'a';
+            var fromRow = move[1] - '1';
+            ChessPiece piece = board[fromRow, fromCol];
+
+            if (piece.Type == PieceType.Pawn)
+            {
+                return move; 
+            }
+
+            return ChessPiece.ChessPieceToString(piece);
+        }
     }
 
 }

@@ -40,6 +40,7 @@ namespace ChessCompanion.MVVM.Model
                     mediator.WaitForOpponentToMove();
                     //mediator.GetBestMoveWithInfo();
                     mediator.GetBestMoveMultiLines();
+                    
                     if (mediator.isEvaluationBarEnabled)
                     {
                         mediator.UpdateEvaluationBar();

@@ -82,5 +82,20 @@ namespace ChessCompanion.Core
 
             return new ChessPiece(type, color);
         }
+
+        public static String ChessPieceToString(ChessPiece piece)
+        {
+            return piece.Type switch
+            {
+                PieceType.Pawn => "Pawn",
+                PieceType.Knight => "Knight",
+                PieceType.Bishop => "Bishop",
+                PieceType.Rook => "Rook",
+                PieceType.Queen => "Queen",
+                PieceType.King => "King",
+                _ => throw new ArgumentException("Invalid piece type")
+            };
+            
+        }
     }
 }
